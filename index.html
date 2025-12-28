@@ -544,6 +544,210 @@
             }
         }
 
+        /* Recipes Section */
+        .recipes {
+            padding: 8rem 0;
+            background-color: var(--cream);
+        }
+
+        .recipes-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        /* Search Bar */
+        .recipe-search {
+            max-width: 500px;
+            margin: 0 auto 2rem;
+            position: relative;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1.25rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            color: var(--text-light);
+            pointer-events: none;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem 1.5rem 1rem 3.5rem;
+            border: 1px solid var(--warm-blush);
+            border-radius: 50px;
+            font-family: 'Jost', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            background: var(--cream);
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .search-input::placeholder {
+            color: var(--text-light);
+            opacity: 0.6;
+        }
+
+        .search-input:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(184, 149, 108, 0.1);
+        }
+
+        /* Filter Buttons */
+        .recipe-filters {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.75rem 2rem;
+            background: transparent;
+            border: 1px solid var(--warm-blush);
+            border-radius: 50px;
+            font-family: 'Jost', sans-serif;
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover {
+            background: var(--soft-peach);
+            border-color: var(--gold);
+        }
+
+        .filter-btn.active {
+            background: var(--gold);
+            border-color: var(--gold);
+            color: var(--cream);
+        }
+
+        /* Recipes Grid */
+        .recipes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        /* Recipe Card */
+        .recipe-card {
+            background: var(--cream);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(92, 74, 61, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .recipe-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 40px rgba(92, 74, 61, 0.15);
+        }
+
+        .recipe-card[data-source="instagram"] {
+            border-top: 3px solid var(--deep-brown);
+        }
+
+        .recipe-card[data-source="youtube"] {
+            border-top: 3px solid var(--deep-brown);
+        }
+
+        .recipe-card.hidden {
+            display: none;
+        }
+
+        .recipe-image {
+            width: 100%;
+            aspect-ratio: 1/1;
+            object-fit: cover;
+            background: var(--soft-peach);
+        }
+
+        .recipe-content {
+            padding: 1.5rem;
+        }
+
+        .recipe-platform {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.75rem;
+        }
+
+        .recipe-platform svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .recipe-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.25rem;
+            color: var(--deep-brown);
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .recipe-date {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+
+        .recipe-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--gold);
+            font-size: 0.85rem;
+            text-decoration: none;
+            font-weight: 500;
+            transition: gap 0.3s ease;
+        }
+
+        .recipe-link:hover {
+            gap: 0.75rem;
+        }
+
+        /* Loading State */
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            display: none;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            margin: 0 auto 1rem;
+            border: 3px solid var(--warm-blush);
+            border-top-color: var(--gold);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
         @media (max-width: 768px) {
             .nav-links {
                 display: none;
@@ -564,6 +768,18 @@
             .social-stats {
                 gap: 1.5rem;
             }
+
+            .recipes-grid {
+                grid-template-columns: 1fr;
+                max-width: 400px;
+                margin: 0 auto;
+            }
+
+            .recipe-filters {
+                flex-direction: column;
+                max-width: 250px;
+                margin: 0 auto 2rem;
+            }
         }
     </style>
 </head>
@@ -574,6 +790,7 @@
         <ul class="nav-links">
             <li><a href="#about">Hakkımda</a></li>
             <li><a href="#expertise">Uzmanlık</a></li>
+            <li><a href="#recipes">Tarifler</a></li>
             <li><a href="#social">Takip Et</a></li>
             <li><a href="#contact">İletişim</a></li>
         </ul>
@@ -664,6 +881,43 @@
         </div>
     </section>
 
+    <!-- Recipes Section -->
+    <section class="recipes" id="recipes">
+        <div class="container">
+            <div class="recipes-header">
+                <p class="section-label">Tariflerim</p>
+                <h2 class="section-title">En Son Tarifler</h2>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="recipe-search">
+                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/>
+                    <path d="m21 21-4.35-4.35"/>
+                </svg>
+                <input type="text" id="recipeSearch" placeholder="Tarif ara..." class="search-input">
+            </div>
+
+            <!-- Filter Buttons -->
+            <div class="recipe-filters">
+                <button class="filter-btn active" data-filter="all">Tümü</button>
+                <button class="filter-btn" data-filter="instagram">Instagram</button>
+                <button class="filter-btn" data-filter="youtube">YouTube</button>
+            </div>
+
+            <!-- Recipes Grid -->
+            <div class="recipes-grid" id="recipesGrid">
+                <!-- JavaScript ile doldurulacak -->
+            </div>
+
+            <!-- Loading State -->
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Tarifler yükleniyor...</p>
+            </div>
+        </div>
+    </section>
+
     <!-- Social Section -->
     <section class="social" id="social">
         <div class="container">
@@ -679,10 +933,6 @@
                         <div class="stat-number">1.2K+</div>
                         <div class="stat-label">Paylaşım</div>
                     </div>
-                    <div class="stat">
-                        <div class="stat-number">10.6M</div>
-                        <div class="stat-label">Threads Takipçi</div>
-                    </div>
                 </div>
                 <div class="social-links">
                     <a href="https://www.instagram.com/handeakiner/" target="_blank" class="social-link">
@@ -696,12 +946,6 @@
                             <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
                         </svg>
                         YouTube
-                    </a>
-                    <a href="https://www.threads.net/@handeakiner" target="_blank" class="social-link">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M12.186 24h-.007c-3.581-.024-6.334-1.205-8.184-3.509C2.35 18.44 1.5 15.586 1.472 12.01v-.017c.03-3.579.879-6.43 2.525-8.482C5.845 1.205 8.6.024 12.18 0h.014c2.746.02 5.043.725 6.826 2.098 1.677 1.29 2.858 3.13 3.509 5.467l-2.04.569c-1.104-3.96-3.898-5.984-8.304-6.015-2.91.022-5.11.936-6.54 2.717C4.307 6.504 3.616 8.914 3.589 12c.027 3.086.718 5.496 2.057 7.164 1.43 1.783 3.631 2.698 6.54 2.717 2.623-.02 4.358-.631 5.8-2.045 1.647-1.613 1.618-3.593 1.09-4.798-.31-.71-.873-1.3-1.634-1.75-.192 1.352-.622 2.446-1.284 3.272-.886 1.102-2.14 1.704-3.73 1.79-1.202.065-2.361-.218-3.259-.801-1.063-.689-1.685-1.74-1.752-2.96-.065-1.17.408-2.243 1.33-3.023.88-.744 2.121-1.158 3.476-1.155l-.001.002c.453.002.876.03 1.263.085.19-.702.286-1.46.286-2.274 0-.753-.088-1.477-.263-2.162a12.61 12.61 0 0 0-.49.013c-1.794.05-3.298.554-4.478 1.5-1.258 1.008-1.91 2.397-1.836 3.913.085 1.74 1.013 3.166 2.614 4.02 1.26.67 2.746.994 4.18.91 1.107-.06 2.01-.393 2.685-.992.744-.66 1.2-1.634 1.357-2.893.552.274 1.04.62 1.453 1.034.838.838 1.306 1.95 1.392 3.304.047.74-.03 1.643-.503 2.666-.614 1.33-1.674 2.396-3.151 3.165-1.4.73-3.079 1.1-4.991 1.1zm.378-9.617c-1.2-.043-2.05.308-2.532.742-.47.424-.705.973-.682 1.588.04.893.548 1.294.864 1.5.544.351 1.283.502 2.079.424 1.037-.064 1.83-.453 2.36-1.153.37-.49.636-1.163.793-2.003-.887-.197-1.842-.098-2.882-1.098z"/>
-                        </svg>
-                        Threads
                     </a>
                 </div>
             </div>
@@ -725,5 +969,221 @@
         <div class="footer-logo">Hande Akıner</div>
         <p class="footer-text">© 2025 Tüm Hakları Saklıdır</p>
     </footer>
+
+    <!-- Papa Parse CSV Library -->
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+
+    <script>
+        // TEST VERİSİ - Gerçek API verileri gibi yapılandırılmış
+        const mockRecipes = [
+            {
+                id: 1,
+                source: 'instagram',
+                title: 'Ev Yapımı Çikolatalı Kurabiye',
+                image: 'https://via.placeholder.com/400x400/F5E6D8/5C4A3D?text=Cikolatali+Kurabiye',
+                date: '2025-01-15',
+                link: 'https://www.instagram.com/handeakiner/',
+                caption: 'Enfes çikolatalı kurabiye tarifi...'
+            },
+            {
+                id: 2,
+                source: 'youtube',
+                title: 'Pastane Usulü Tiramisu | Detaylı Anlatım',
+                image: 'https://via.placeholder.com/400x400/F5E6D8/5C4A3D?text=Tiramisu',
+                date: '2025-01-12',
+                link: 'https://youtu.be/pGH_MEOt8Y8',
+                caption: 'Pastane usulü tiramisu nasıl yapılır?'
+            },
+            {
+                id: 3,
+                source: 'instagram',
+                title: 'Sağlıklı Kahvaltı Tabağı',
+                image: 'https://via.placeholder.com/400x400/F5E6D8/5C4A3D?text=Kahvalti',
+                date: '2025-01-10',
+                link: 'https://www.instagram.com/handeakiner/',
+                caption: 'Güne harika bir kahvaltı ile başlayın!'
+            },
+            {
+                id: 4,
+                source: 'youtube',
+                title: 'Limonlu Cheesecake - Püf Noktalarıyla',
+                image: 'https://via.placeholder.com/400x400/F5E6D8/5C4A3D?text=Cheesecake',
+                date: '2025-01-08',
+                link: 'https://youtu.be/pGH_MEOt8Y8',
+                caption: 'Mükemmel limonlu cheesecake tarifi'
+            },
+            {
+                id: 5,
+                source: 'instagram',
+                title: 'Mevsim Salata Tabağı',
+                image: 'https://via.placeholder.com/400x400/F5E6D8/5C4A3D?text=Salata',
+                date: '2025-01-05',
+                link: 'https://www.instagram.com/handeakiner/',
+                caption: 'Taze ve sağlıklı salata fikirleri'
+            },
+            {
+                id: 6,
+                source: 'youtube',
+                title: 'Ev Yapımı Ekmek | Geleneksel Tarif',
+                image: 'https://via.placeholder.com/400x400/F5E6D8/5C4A3D?text=Ekmek',
+                date: '2025-01-02',
+                link: 'https://youtu.be/pGH_MEOt8Y8',
+                caption: 'Evde ekmek yapmak hiç bu kadar kolay olmamıştı!'
+            }
+        ];
+
+        // SVG ikonları
+        const icons = {
+            instagram: '<svg viewBox="0 0 24 24" fill="#E4405F"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>',
+            youtube: '<svg viewBox="0 0 24 24" fill="#FF0000"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>',
+            arrow: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>'
+        };
+
+        // Tarihi formatla (gg.aa.yyyy)
+        function formatDate(dateStr) {
+            // dateStr formatı: dd.mm.yyyy
+            const parts = dateStr.split('.');
+            if (parts.length === 3) {
+                return dateStr; // Zaten doğru formatta
+            }
+            // Eğer farklı formattaysa dönüştür
+            const date = new Date(dateStr);
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+            return `${day}.${month}.${year}`;
+        }
+
+        // Recipe card HTML oluştur
+        function createRecipeCard(recipe) {
+            return `
+                <div class="recipe-card" data-source="${recipe.source}">
+                    <img src="${recipe.image}" alt="${recipe.title}" class="recipe-image" loading="lazy">
+                    <div class="recipe-content">
+                        <div class="recipe-platform">
+                            ${icons[recipe.source]}
+                            <span>${recipe.source === 'instagram' ? 'Instagram' : 'YouTube'}</span>
+                        </div>
+                        <h3 class="recipe-title">${recipe.title}</h3>
+                        <p class="recipe-date">${formatDate(recipe.date)}</p>
+                        <a href="${recipe.link}" target="_blank" class="recipe-link">
+                            Tarifi Görüntüle
+                            ${icons.arrow}
+                        </a>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Global değişken
+        let allRecipes = [];
+
+        // CSV'den tarifleri yükle
+        async function loadRecipesFromCSV() {
+            const loading = document.getElementById('loading');
+            loading.classList.add('active');
+
+            try {
+                const response = await fetch('recipes.csv?' + new Date().getTime()); // Cache bypass
+
+                if (!response.ok) {
+                    throw new Error('CSV dosyası bulunamadı');
+                }
+
+                const csvText = await response.text();
+
+                Papa.parse(csvText, {
+                    header: true,
+                    delimiter: ';',
+                    skipEmptyLines: true,
+                    complete: function(results) {
+                        allRecipes = results.data.map((row, index) => ({
+                            id: index + 1,
+                            source: row.Platform ? row.Platform.toLowerCase() : 'instagram',
+                            title: row['Başlık'] || row.Baslik || 'İsimsiz Tarif',
+                            image: row['Görsel URL'] || row['Gorsel URL'] || 'https://via.placeholder.com/400',
+                            link: row.Link || '#',
+                            caption: row['Açıklama'] || row.Aciklama || '',
+                            date: row.Tarih || new Date().toISOString().split('T')[0]
+                        }));
+
+                        displayRecipes('all', '');
+                        loading.classList.remove('active');
+                    },
+                    error: function(error) {
+                        console.error('CSV parse hatası:', error);
+                        // Fallback: Mock data kullan
+                        allRecipes = mockRecipes;
+                        displayRecipes('all', '');
+                        loading.classList.remove('active');
+                    }
+                });
+            } catch (error) {
+                console.error('CSV yükleme hatası:', error);
+                // Fallback: Mock data kullan
+                allRecipes = mockRecipes;
+                displayRecipes('all', '');
+                loading.classList.remove('active');
+            }
+        }
+
+        // Tarifleri göster
+        function displayRecipes(filter = 'all', searchQuery = '') {
+            const grid = document.getElementById('recipesGrid');
+
+            // Filtreleme
+            let filtered = filter === 'all'
+                ? allRecipes
+                : allRecipes.filter(r => r.source === filter);
+
+            // Arama filtresi
+            if (searchQuery) {
+                filtered = filtered.filter(recipe =>
+                    recipe.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    recipe.caption.toLowerCase().includes(searchQuery.toLowerCase())
+                );
+            } else {
+                // Arama yoksa sadece ilk 6 tarifi göster
+                filtered = filtered.slice(0, 6);
+            }
+
+            // Cards oluştur
+            if (filtered.length > 0) {
+                grid.innerHTML = filtered.map(createRecipeCard).join('');
+            } else {
+                grid.innerHTML = '<p style="text-align: center; color: var(--text-light); grid-column: 1/-1;">Aradığınız tarif bulunamadı.</p>';
+            }
+        }
+
+        // Filter butonları
+        function setupFilters() {
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const searchInput = document.getElementById('recipeSearch');
+            let currentFilter = 'all';
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Active class değiştir
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+
+                    // Tarifleri filtrele
+                    currentFilter = btn.dataset.filter;
+                    displayRecipes(currentFilter, searchInput.value);
+                });
+            });
+
+            // Arama input event
+            searchInput.addEventListener('input', (e) => {
+                displayRecipes(currentFilter, e.target.value);
+            });
+        }
+
+        // Sayfa yüklendiğinde
+        document.addEventListener('DOMContentLoaded', () => {
+            loadRecipesFromCSV();
+            setupFilters();
+        });
+    </script>
 </body>
 </html>
