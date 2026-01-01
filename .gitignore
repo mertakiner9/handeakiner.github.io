@@ -1,5 +1,7 @@
 # Backup files
 recipes.csv.backup
+recipes.csv.backup2
+recipes.csv.backup3
 
 # Progress tracking
 .download_progress.json
@@ -7,6 +9,11 @@ recipes.csv.backup
 # Log files
 download.log
 failed_urls.txt
+youtube_fetch.log
+failed_youtube_urls.txt
+
+# Environment variables (API keys)
+.env
 
 # Python
 __pycache__/
