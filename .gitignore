@@ -1,0 +1,21 @@
+# Backup files
+recipes.csv.backup
+
+# Progress tracking
+.download_progress.json
+
+# Log files
+download.log
+failed_urls.txt
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info/
+dist/
+build/

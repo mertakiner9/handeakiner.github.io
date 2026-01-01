@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Görsel Yardımcısı | Hande Akıner</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cream: #FDF8F3;
+            --soft-peach: #F5E6D8;
+            --warm-blush: #E8D4C4;
+            --terracotta: #C4A484;
+            --gold: #B8956C;
+            --deep-brown: #5C4A3D;
+            --text-dark: #3D3229;
+            --text-light: #7A6B5E;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Jost', sans-serif;
+            background-color: var(--cream);
+            color: var(--text-dark);
+            line-height: 1.7;
+            font-weight: 300;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            font-weight: 500;
+            color: var(--deep-brown);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--text-light);
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+        }
+
+        .section {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .section h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
+            color: var(--deep-brown);
+            margin-bottom: 1rem;
+        }
+
+        .step {
+            margin-bottom: 1.5rem;
+            padding-left: 2rem;
+            position: relative;
+        }
+
+        .step::before {
+            content: attr(data-step);
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: var(--gold);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .bookmarklet-button {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--terracotta) 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            cursor: move;
+            transition: transform 0.2s;
+            box-shadow: 0 4px 12px rgba(184, 149, 108, 0.3);
+            text-align: center;
+            display: block;
+            margin: 1.5rem auto;
+            max-width: 300px;
+        }
+
+        .bookmarklet-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(184, 149, 108, 0.4);
+        }
+
+        .code-box {
+            background: var(--soft-peach);
+            padding: 1rem;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+            color: var(--deep-brown);
+        }
+
+        .highlight {
+            background: var(--warm-blush);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .note {
+            background: #FFF9E6;
+            border-left: 4px solid var(--gold);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: var(--gold);
+            text-decoration: none;
+            margin-top: 2rem;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            color: var(--deep-brown);
+        }
+
+        .demo-video {
+            width: 100%;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border: 2px solid var(--soft-peach);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .section {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Instagram Görsel Yardımcısı</h1>
+        <p class="subtitle">Instagram postlarınızdan kapak görsellerini tek tıkla alın</p>
+
+        <div class="section">
+            <h2>Bookmarklet Nedir?</h2>
+            <p>Bookmarklet, tarayıcınızın yer imi çubuğuna eklediğiniz küçük bir JavaScript aracıdır. Instagram'da bir gönderi açtığınızda bu yer imine tıklayarak gönderinin kapak görselini otomatik olarak kopyalayabilirsiniz.</p>
+        </div>
+
+        <div class="section">
+            <h2>📌 Kurulum (Tek Seferlik)</h2>
+
+            <div class="step" data-step="1">
+                <p><strong>Yer imi çubuğunu görünür yapın</strong></p>
+                <p>Tarayıcınızda yer imi çubuğu görünmüyorsa:</p>
+                <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                    <li><strong>Chrome/Edge:</strong> Ctrl+Shift+B (Windows) veya Cmd+Shift+B (Mac)</li>
+                    <li><strong>Firefox:</strong> Ctrl+Shift+B (Windows) veya Cmd+Shift+B (Mac)</li>
+                    <li><strong>Safari:</strong> Cmd+Shift+B</li>
+                </ul>
+            </div>
+
+            <div class="step" data-step="2">
+                <p><strong>Aşağıdaki butonu sürükleyin</strong></p>
+                <p>Bu butonu fareyle tutup <span class="highlight">yer imi çubuğunuza sürükleyip bırakın</span>:</p>
+                <a href="javascript:(function(){const img=document.querySelector('meta[property=&quot;og:image&quot;]');if(img){const url=img.getAttribute('content');navigator.clipboard.writeText(url).then(()=>{alert('✅ Görsel URL kopyalandı!\n\nCSV dosyanıza yapıştırabilirsiniz:\n\n'+url);}).catch(()=>{prompt('📋 Görsel URL (Ctrl+C ile kopyalayın):',url);});}else{alert('❌ Görsel bulunamadı.\n\nInstagram post sayfasında olduğunuzdan emin olun.');}})();" class="bookmarklet-button" onclick="alert('⚠️ Bu butonu SÜRÜKLE-BIRAK ile yer imi çubuğunuza ekleyin!\n\nButona tıklamayın, fareyle tutup yukarıdaki yer imi çubuğuna sürükleyin.'); return false;">📸 Instagram Görseli Al</a>
+                <div class="note">
+                    <strong>💡 İpucu:</strong> Butona tıklamayın! Fareyle tutup yer imi çubuğunuza sürükleyip bırakın.
+                </div>
+            </div>
+
+            <div class="step" data-step="3">
+                <p><strong>Alternatif Yöntem:</strong> Manuel Ekleme</p>
+                <p>Eğer sürükle-bırak çalışmazsa, yer imi çubuğuna sağ tıklayıp "Yeni Yer İmi Ekle" seçin ve şu bilgileri girin:</p>
+                <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                    <li><strong>İsim:</strong> Instagram Görseli Al</li>
+                    <li><strong>URL:</strong> (Aşağıdaki kodu kopyalayın)</li>
+                </ul>
+                <div class="code-box">javascript:(function(){const img=document.querySelector('meta[property="og:image"]');if(img){const url=img.getAttribute('content');navigator.clipboard.writeText(url).then(()=>{alert('✅ Görsel URL kopyalandı!\n\nCSV dosyanıza yapıştırabilirsiniz:\n\n'+url);}).catch(()=>{prompt('📋 Görsel URL (Ctrl+C ile kopyalayın):',url);});}else{alert('❌ Görsel bulunamadı.\n\nInstagram post sayfasında olduğunuzdan emin olun.');}})();</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🚀 Kullanım</h2>
+
+            <div class="step" data-step="1">
+                <p><strong>Instagram gönderisini açın</strong></p>
+                <p>Tarif eklemek istediğiniz Instagram gönderisinin sayfasını açın (örn: https://www.instagram.com/p/ABC123/)</p>
+            </div>
+
+            <div class="step" data-step="2">
+                <p><strong>Bookmarklet'e tıklayın</strong></p>
+                <p>Yer imi çubuğundaki "📸 Instagram Görseli Al" yer imine tıklayın</p>
+            </div>
+
+            <div class="step" data-step="3">
+                <p><strong>Görsel URL'i kopyalandı!</strong></p>
+                <p>Başarılı mesajı göreceksiniz ve görsel URL'i otomatik olarak kopyalanacak</p>
+            </div>
+
+            <div class="step" data-step="4">
+                <p><strong>CSV dosyasına yapıştırın</strong></p>
+                <p>recipes.csv dosyasını açın ve "Görsel URL" sütununa yapıştırın (Ctrl+V)</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📋 CSV Format Örneği</h2>
+            <p>recipes.csv dosyanız şu formatta olmalı:</p>
+            <div class="code-box">Başlık;Platform;Görsel URL;Link;Açıklama;Tarih
+Çikolatalı Kurabiye;instagram;[BURAYA YAPISTIRIN];https://www.instagram.com/p/ABC/;Lezzetli tarif;15.01.2025</div>
+        </div>
+
+        <div class="section">
+            <h2>❓ Sorun Giderme</h2>
+
+            <div class="step" data-step="1">
+                <p><strong>"Görsel bulunamadı" hatası alıyorsanız:</strong></p>
+                <ul style="margin-left: 1.5rem;">
+                    <li>Instagram POST sayfasında olduğunuzdan emin olun (profil sayfası değil)</li>
+                    <li>Sayfa tamamen yüklenmiş olmalı</li>
+                    <li>Reels için de çalışır</li>
+                </ul>
+            </div>
+
+            <div class="step" data-step="2">
+                <p><strong>Clipboard çalışmıyorsa:</strong></p>
+                <p>Bazı tarayıcılarda clipboard API çalışmayabilir. Bu durumda görsel URL'i gösteren bir pencere açılır, Ctrl+C ile kopyalayabilirsiniz.</p>
+            </div>
+
+            <div class="step" data-step="3">
+                <p><strong>Manuel Yöntem:</strong></p>
+                <p>Bookmarklet çalışmazsa manuel olarak:</p>
+                <ul style="margin-left: 1.5rem;">
+                    <li>Instagram postunu açın</li>
+                    <li>Sağ tık → "Öğeyi İncele" (Inspect)</li>
+                    <li>Elements tab'ında Ctrl+F ile <span class="highlight">og:image</span> arayın</li>
+                    <li><code>&lt;meta property="og:image" content="..."&gt;</code> etiketinin content kısmını kopyalayın</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🔒 Gizlilik ve Güvenlik</h2>
+            <ul style="margin-left: 1.5rem;">
+                <li>✅ Tamamen tarayıcınızda çalışır</li>
+                <li>✅ Hiçbir veri sunucuya gönderilmez</li>
+                <li>✅ Sadece Instagram'ın public meta tag'ini okur</li>
+                <li>✅ Instagram'a giriş yapmaya gerek yok</li>
+                <li>✅ Kişisel bilgi toplamaz</li>
+            </ul>
+        </div>
+
+        <a href="index.html" class="back-link">← Ana Sayfaya Dön</a>
+    </div>
+</body>
+</html>
