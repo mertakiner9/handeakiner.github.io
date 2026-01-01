@@ -294,11 +294,15 @@ def main():
             continue
 
         # Check if already has data
-        has_description = bool(row.get('Açıklama', '').strip())
+        current_description = row.get('Açıklama', '').strip()
+        current_title = row.get('Başlık', '').strip()
         has_image = bool(row.get('Görsel URL', '').strip())
         has_date = bool(row.get('Tarih', '').strip())
 
-        if has_description and has_image and has_date:
+        # Check if description is meaningful (not just the title)
+        has_real_description = current_description and current_description != current_title
+
+        if has_real_description and has_image and has_date:
             logging.debug(f"Row {i}: Already has data, skipping")
             stats['skipped'] += 1
             continue
@@ -312,7 +316,7 @@ def main():
             continue
 
         # Update row
-        if not has_description:
+        if not has_real_description:
             row['Açıklama'] = video_data['description']
         if not has_image:
             row['Görsel URL'] = video_data['thumbnail_url']
