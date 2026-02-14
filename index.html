@@ -744,6 +744,163 @@
             display: block;
         }
 
+        /* Search Clear Button */
+        .search-clear {
+            position: absolute;
+            right: 1.25rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+            padding: 4px;
+            display: none;
+            border-radius: 50%;
+            transition: color 0.3s ease;
+        }
+        .search-clear:hover { color: var(--deep-brown); }
+        .search-clear.visible { display: block; }
+
+        /* Search Chips */
+        .search-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+        .search-chip {
+            font-size: 0.8rem;
+            padding: 0.4rem 1rem;
+            background: var(--cream);
+            border: 1px solid var(--warm-blush);
+            border-radius: 50px;
+            cursor: pointer;
+            color: var(--text-light);
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        .search-chip:hover {
+            background: var(--gold);
+            color: var(--cream);
+            border-color: var(--gold);
+        }
+
+        /* Recipes Subtitle */
+        .recipes-subtitle {
+            color: var(--text-light);
+            font-size: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Results Info */
+        .results-info {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+        .results-info strong {
+            color: var(--deep-brown);
+            font-weight: 500;
+        }
+
+        /* Recipe Description */
+        .recipe-desc {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            line-height: 1.6;
+            margin-bottom: 0.75rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .recipe-desc mark {
+            background: rgba(184,149,108,0.25);
+            color: inherit;
+            border-radius: 2px;
+            padding: 0 2px;
+        }
+        .recipe-desc-full {
+            display: none;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            line-height: 1.7;
+            white-space: pre-wrap;
+            margin-bottom: 0.75rem;
+        }
+        .recipe-desc-full mark {
+            background: rgba(184,149,108,0.25);
+            color: inherit;
+            border-radius: 2px;
+            padding: 0 2px;
+        }
+        .recipe-card.expanded .recipe-desc { display: none; }
+        .recipe-card.expanded .recipe-desc-full { display: block; }
+
+        .expand-btn {
+            background: none;
+            border: none;
+            color: var(--gold);
+            font-family: 'Jost', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 0;
+            margin-bottom: 0.75rem;
+            transition: color 0.3s ease;
+        }
+        .expand-btn:hover { color: var(--deep-brown); }
+
+        /* Recipe Tags */
+        .recipe-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-bottom: 0.75rem;
+        }
+        .recipe-tag {
+            font-size: 0.7rem;
+            color: var(--gold);
+            background: rgba(184,149,108,0.1);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+        }
+
+        /* Load More */
+        .load-more-wrap {
+            text-align: center;
+            padding: 2rem 0 0;
+        }
+        .load-more-btn {
+            font-family: 'Jost', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 400;
+            padding: 0.85rem 2.5rem;
+            background: transparent;
+            color: var(--deep-brown);
+            border: 1px solid var(--warm-blush);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 0.05em;
+        }
+        .load-more-btn:hover {
+            background: var(--gold);
+            border-color: var(--gold);
+            color: var(--cream);
+        }
+
+        /* No Link Card Style */
+        .recipe-card .no-link-notice {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            opacity: 0.6;
+            font-style: italic;
+        }
+
         .spinner {
             width: 50px;
             height: 50px;
@@ -896,7 +1053,8 @@
         <div class="container">
             <div class="recipes-header">
                 <p class="section-label">Tariflerim</p>
-                <h2 class="section-title">En Son Tarifler</h2>
+                <h2 class="section-title">Tarif Arşivi</h2>
+                <p class="recipes-subtitle">984 tarif ve içerik arasında arayın</p>
             </div>
 
             <!-- Search Bar -->
@@ -905,19 +1063,43 @@
                     <circle cx="11" cy="11" r="8"/>
                     <path d="m21 21-4.35-4.35"/>
                 </svg>
-                <input type="text" id="recipeSearch" placeholder="Tarif ara..." class="search-input">
+                <input type="text" id="recipeSearch" placeholder="Malzeme, tarif veya konu ara... (ör: patlıcan, makarna, bodrum)" class="search-input">
+                <button class="search-clear" id="searchClear" title="Temizle">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+
+            <!-- Quick Search Chips -->
+            <div class="search-chips" id="searchChips">
+                <span class="search-chip" data-q="mercimek">mercimek</span>
+                <span class="search-chip" data-q="makarna">makarna</span>
+                <span class="search-chip" data-q="çorba">çorba</span>
+                <span class="search-chip" data-q="salata">salata</span>
+                <span class="search-chip" data-q="peynir">peynir</span>
+                <span class="search-chip" data-q="kahvaltı">kahvaltı</span>
+                <span class="search-chip" data-q="tatlı">tatlı</span>
+                <span class="search-chip" data-q="bodrum">bodrum</span>
             </div>
 
             <!-- Filter Buttons -->
             <div class="recipe-filters">
                 <button class="filter-btn active" data-filter="all">Tümü</button>
-                <button class="filter-btn" data-filter="instagram">Instagram</button>
+                <button class="filter-btn" data-filter="instagram post">Postlar</button>
+                <button class="filter-btn" data-filter="instagram reel">Reeller</button>
                 <button class="filter-btn" data-filter="youtube">YouTube</button>
             </div>
+
+            <!-- Results Info -->
+            <div class="results-info" id="resultsInfo"></div>
 
             <!-- Recipes Grid -->
             <div class="recipes-grid" id="recipesGrid">
                 <!-- JavaScript ile doldurulacak -->
+            </div>
+
+            <!-- Load More -->
+            <div class="load-more-wrap" id="loadMoreWrap" style="display:none;">
+                <button class="load-more-btn" id="loadMoreBtn">Daha fazla göster</button>
             </div>
 
             <!-- Loading State -->
@@ -984,109 +1166,66 @@
     <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 
     <script>
-        // TEST VERİSİ - Gerçek API verileri gibi yapılandırılmış
-        const mockRecipes = [
-            {
-                id: 1,
-                source: 'instagram',
-                title: 'Ev Yapımı Çikolatalı Kurabiye',
-                image: 'https://via.placeholder.com/400x400/F5E6D8/5C4A3D?text=Cikolatali+Kurabiye',
-                date: '2025-01-15',
-                link: 'https://www.instagram.com/handeakiner/',
-                caption: 'Enfes çikolatalı kurabiye tarifi...'
-            },
-            {
-                id: 2,
-                source: 'youtube',
-                title: 'Pastane Usulü Tiramisu | Detaylı Anlatım',
-                image: 'https://via.placeholder.com/400x400/F5E6D8/5C4A3D?text=Tiramisu',
-                date: '2025-01-12',
-                link: 'https://youtu.be/pGH_MEOt8Y8',
-                caption: 'Pastane usulü tiramisu nasıl yapılır?'
-            },
-            {
-                id: 3,
-                source: 'instagram',
-                title: 'Sağlıklı Kahvaltı Tabağı',
-                image: 'https://via.placeholder.com/400x400/F5E6D8/5C4A3D?text=Kahvalti',
-                date: '2025-01-10',
-                link: 'https://www.instagram.com/handeakiner/',
-                caption: 'Güne harika bir kahvaltı ile başlayın!'
-            },
-            {
-                id: 4,
-                source: 'youtube',
-                title: 'Limonlu Cheesecake - Püf Noktalarıyla',
-                image: 'https://via.placeholder.com/400x400/F5E6D8/5C4A3D?text=Cheesecake',
-                date: '2025-01-08',
-                link: 'https://youtu.be/pGH_MEOt8Y8',
-                caption: 'Mükemmel limonlu cheesecake tarifi'
-            },
-            {
-                id: 5,
-                source: 'instagram',
-                title: 'Mevsim Salata Tabağı',
-                image: 'https://via.placeholder.com/400x400/F5E6D8/5C4A3D?text=Salata',
-                date: '2025-01-05',
-                link: 'https://www.instagram.com/handeakiner/',
-                caption: 'Taze ve sağlıklı salata fikirleri'
-            },
-            {
-                id: 6,
-                source: 'youtube',
-                title: 'Ev Yapımı Ekmek | Geleneksel Tarif',
-                image: 'https://via.placeholder.com/400x400/F5E6D8/5C4A3D?text=Ekmek',
-                date: '2025-01-02',
-                link: 'https://youtu.be/pGH_MEOt8Y8',
-                caption: 'Evde ekmek yapmak hiç bu kadar kolay olmamıştı!'
-            }
-        ];
-
         // SVG ikonları
         const icons = {
-            instagram: '<svg viewBox="0 0 24 24" fill="#E4405F"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>',
-            youtube: '<svg viewBox="0 0 24 24" fill="#FF0000"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>',
-            arrow: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>'
+            instagram: '<svg viewBox="0 0 24 24" fill="#E4405F" width="16" height="16"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>',
+            youtube: '<svg viewBox="0 0 24 24" fill="#FF0000" width="16" height="16"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>',
+            arrow: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg>'
         };
 
-        // Tarihi formatla (gg.aa.yyyy)
+        // Turkish-aware lowercase
+        function trLower(str) {
+            return str.replace(/İ/g,'i').replace(/I/g,'ı').replace(/Ğ/g,'ğ').replace(/Ü/g,'ü')
+                      .replace(/Ş/g,'ş').replace(/Ö/g,'ö').replace(/Ç/g,'ç').toLowerCase();
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        }
+
+        function escapeRegex(str) {
+            return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+
+        // Global state
+        let allRecipes = [];
+        let filtered = [];
+        let displayCount = 12;
+        const BATCH = 12;
+        let currentFilter = 'all';
+        let currentQuery = '';
+
+        // Tarihi formatla
         function formatDate(dateStr) {
-            // dateStr formatı: dd.mm.yyyy
             const parts = dateStr.split('.');
-            if (parts.length === 3) {
-                return dateStr; // Zaten doğru formatta
-            }
-            // Eğer farklı formattaysa dönüştür
+            if (parts.length === 3) return dateStr;
             const date = new Date(dateStr);
             const day = String(date.getDate()).padStart(2, '0');
             const month = String(date.getMonth() + 1).padStart(2, '0');
-            const year = date.getFullYear();
-            return `${day}.${month}.${year}`;
+            return `${day}.${month}.${date.getFullYear()}`;
         }
 
-        // Recipe card HTML oluştur
-        function createRecipeCard(recipe) {
-            return `
-                <div class="recipe-card" data-source="${recipe.source}">
-                    <img src="${recipe.image}" alt="${recipe.title}" class="recipe-image" loading="lazy">
-                    <div class="recipe-content">
-                        <div class="recipe-platform">
-                            ${icons[recipe.source]}
-                            <span>${recipe.source === 'instagram' ? 'Instagram' : 'YouTube'}</span>
-                        </div>
-                        <h3 class="recipe-title">${recipe.title}</h3>
-                        <p class="recipe-date">${formatDate(recipe.date)}</p>
-                        <a href="${recipe.link}" target="_blank" class="recipe-link" onclick="gtag('event', 'recipe_click', {recipe_title: '${recipe.title.replace(/'/g, "\\'")}', recipe_platform: '${recipe.source}', recipe_link: '${recipe.link}'});">
-                            Tarifi Görüntüle
-                            ${icons.arrow}
-                        </a>
-                    </div>
-                </div>
-            `;
+        // Parse date for sorting
+        function parseDate(dateStr) {
+            const parts = (dateStr || '').split('.');
+            if (parts.length === 3) return new Date(parts[2], parts[1]-1, parts[0]);
+            return new Date(0);
         }
 
-        // Global değişken
-        let allRecipes = [];
+        // Highlight search terms in text
+        function highlightText(text, maxLen) {
+            if (!text) return '';
+            let display = maxLen && text.length > maxLen ? text.substring(0, maxLen) + '…' : text;
+            if (!currentQuery) return escapeHtml(display);
+            const terms = trLower(currentQuery).split(/\s+/).filter(t => t.length > 1);
+            if (!terms.length) return escapeHtml(display);
+            let result = escapeHtml(display);
+            terms.forEach(term => {
+                const regex = new RegExp('(' + escapeRegex(term) + ')', 'gi');
+                result = result.replace(regex, '<mark>$1</mark>');
+            });
+            return result;
+        }
 
         // CSV'den tarifleri yükle
         async function loadRecipesFromCSV() {
@@ -1094,12 +1233,8 @@
             loading.classList.add('active');
 
             try {
-                const response = await fetch('recipes.csv?' + new Date().getTime()); // Cache bypass
-
-                if (!response.ok) {
-                    throw new Error('CSV dosyası bulunamadı');
-                }
-
+                const response = await fetch('recipes.csv?' + new Date().getTime());
+                if (!response.ok) throw new Error('CSV bulunamadı');
                 const csvText = await response.text();
 
                 Papa.parse(csvText, {
@@ -1107,108 +1242,242 @@
                     delimiter: ';',
                     skipEmptyLines: true,
                     complete: function(results) {
-                        allRecipes = results.data.map((row, index) => ({
-                            id: index + 1,
-                            source: row.Platform ? row.Platform.toLowerCase() : 'instagram',
-                            title: row['Başlık'] || row.Baslik || 'İsimsiz Tarif',
-                            image: row['Görsel URL'] || row['Gorsel URL'] || 'https://via.placeholder.com/400',
-                            link: row.Link || '#',
-                            caption: row['Açıklama'] || row.Aciklama || '',
-                            date: row.Tarih || new Date().toISOString().split('T')[0]
-                        }));
+                        allRecipes = results.data.map((row, index) => {
+                            const platform = (row.Platform || 'instagram').trim();
+                            const platformLower = platform.toLowerCase();
+                            let source = 'instagram';
+                            if (platformLower.includes('youtube')) source = 'youtube';
+                            else if (platformLower.includes('reel')) source = 'instagram reel';
+                            else source = 'instagram post';
 
-                        displayRecipes('all', '');
+                            const desc = row['Açıklama'] || row.Aciklama || '';
+                            const hashtags = row.Hashtag || '';
+
+                            return {
+                                id: index + 1,
+                                source: source,
+                                title: row['Başlık'] || row.Baslik || 'İsimsiz İçerik',
+                                image: row['Görsel URL'] || row['Gorsel URL'] || '',
+                                link: row.Link || '',
+                                caption: desc,
+                                hashtags: hashtags,
+                                date: row.Tarih || '',
+                                _date: parseDate(row.Tarih || ''),
+                                _searchText: trLower([row['Başlık'] || '', desc, hashtags].join(' '))
+                            };
+                        });
+
+                        // Sort newest first
+                        allRecipes.sort((a, b) => b._date - a._date);
+
+                        // Update subtitle count
+                        const subtitle = document.querySelector('.recipes-subtitle');
+                        if (subtitle) subtitle.textContent = allRecipes.length + ' tarif ve içerik arasında arayın';
+
                         loading.classList.remove('active');
+                        applyFilters();
                     },
-                    error: function(error) {
-                        console.error('CSV parse hatası:', error);
-                        // Fallback: Mock data kullan
-                        allRecipes = mockRecipes;
-                        displayRecipes('all', '');
+                    error: function() {
                         loading.classList.remove('active');
                     }
                 });
             } catch (error) {
                 console.error('CSV yükleme hatası:', error);
-                // Fallback: Mock data kullan
-                allRecipes = mockRecipes;
-                displayRecipes('all', '');
                 loading.classList.remove('active');
             }
         }
 
-        // Tarifleri göster
-        function displayRecipes(filter = 'all', searchQuery = '') {
-            const grid = document.getElementById('recipesGrid');
+        // Apply filters and search
+        function applyFilters() {
+            const query = trLower(currentQuery);
+            const terms = query.split(/\s+/).filter(t => t.length > 0);
 
-            // Filtreleme
-            let filtered = filter === 'all'
-                ? allRecipes
-                : allRecipes.filter(r => r.source === filter);
+            filtered = allRecipes.filter(r => {
+                // Type filter
+                if (currentFilter !== 'all' && r.source !== currentFilter) return false;
+                // Search
+                if (terms.length === 0) return true;
+                return terms.every(term => r._searchText.includes(term));
+            });
 
-            // Arama filtresi
-            if (searchQuery) {
-                filtered = filtered.filter(recipe =>
-                    recipe.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                    recipe.caption.toLowerCase().includes(searchQuery.toLowerCase())
-                );
-            } else {
-                // Arama yoksa sadece ilk 6 tarifi göster
-                filtered = filtered.slice(0, 6);
+            // Relevance scoring
+            if (terms.length > 0) {
+                filtered.forEach(r => {
+                    let score = 0;
+                    const title = trLower(r.title || '');
+                    terms.forEach(t => {
+                        if (title.includes(t)) score += 10;
+                        let idx = 0;
+                        while ((idx = r._searchText.indexOf(t, idx)) !== -1) { score++; idx += t.length; }
+                    });
+                    r._score = score;
+                });
+                filtered.sort((a, b) => (b._score || 0) - (a._score || 0));
             }
 
-            // Cards oluştur
-            if (filtered.length > 0) {
-                grid.innerHTML = filtered.map(createRecipeCard).join('');
+            displayCount = BATCH;
+            render();
+        }
+
+        // Create recipe card HTML
+        function createRecipeCard(recipe, index) {
+            const desc = recipe.caption || '';
+            const shortDesc = desc.length > 150 ? desc.substring(0, 150) + '…' : desc;
+            const needsExpand = desc.length > 150;
+            const hasLink = recipe.link && recipe.link.startsWith('http');
+            const isYoutube = recipe.source === 'youtube';
+            const hasImage = recipe.image && recipe.image.startsWith('http');
+            const tags = (recipe.hashtags || '').split(/\s+/).filter(t => t.startsWith('#')).slice(0, 4);
+            const sourceIcon = isYoutube ? icons.youtube : icons.instagram;
+            const sourceLabel = isYoutube ? 'YouTube' : (recipe.source === 'instagram reel' ? 'Reel' : 'Post');
+
+            const safeTitle = escapeHtml(recipe.title || '');
+            const safeLink = escapeHtml(recipe.link || '');
+
+            let imageHtml = '';
+            if (hasImage) {
+                imageHtml = `<img src="${escapeHtml(recipe.image)}" alt="${safeTitle}" class="recipe-image" loading="lazy" onerror="this.style.display='none'">`;
+            }
+
+            let linkHtml = '';
+            if (hasLink) {
+                linkHtml = `<a href="${safeLink}" target="_blank" class="recipe-link" onclick="gtag('event', 'recipe_click', {recipe_title: '${safeTitle.replace(/'/g,"\\'")}', recipe_platform: '${recipe.source}'});">
+                    Görüntüle ${icons.arrow}
+                </a>`;
             } else {
-                grid.innerHTML = '<p style="text-align: center; color: var(--text-light); grid-column: 1/-1;">Aradığınız tarif bulunamadı.</p>';
+                linkHtml = `<span class="no-link-notice">Arşiv içeriği</span>`;
+            }
+
+            return `
+                <div class="recipe-card" data-source="${recipe.source}" style="animation-delay:${Math.min(index * 0.04, 0.3)}s">
+                    ${imageHtml}
+                    <div class="recipe-content">
+                        <div class="recipe-platform">
+                            ${sourceIcon}
+                            <span>${sourceLabel}</span>
+                        </div>
+                        <h3 class="recipe-title">${highlightText(recipe.title || '', 80)}</h3>
+                        <p class="recipe-date">${formatDate(recipe.date)}</p>
+                        <div class="recipe-desc">${highlightText(shortDesc)}</div>
+                        ${needsExpand ? `<div class="recipe-desc-full">${highlightText(desc)}</div>
+                        <button class="expand-btn" onclick="toggleExpand(this)">Devamını oku</button>` : ''}
+                        ${tags.length ? `<div class="recipe-tags">${tags.map(t => `<span class="recipe-tag">${escapeHtml(t)}</span>`).join('')}</div>` : ''}
+                        ${linkHtml}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Render grid
+        function render() {
+            const grid = document.getElementById('recipesGrid');
+            const showing = filtered.slice(0, displayCount);
+
+            // Results info
+            const info = document.getElementById('resultsInfo');
+            if (currentQuery || currentFilter !== 'all') {
+                info.innerHTML = `<strong>${filtered.length}</strong> sonuç bulundu`;
+            } else {
+                info.innerHTML = `<strong>${filtered.length}</strong> içerik`;
+            }
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '<p style="text-align:center; color:var(--text-light); grid-column:1/-1; padding:3rem;">Aradığınız içerik bulunamadı. Farklı kelimeler deneyin.</p>';
+                document.getElementById('loadMoreWrap').style.display = 'none';
+                return;
+            }
+
+            grid.innerHTML = showing.map((r, i) => createRecipeCard(r, i)).join('');
+
+            // Load more
+            const wrap = document.getElementById('loadMoreWrap');
+            if (displayCount < filtered.length) {
+                wrap.style.display = 'block';
+                const remaining = filtered.length - displayCount;
+                document.getElementById('loadMoreBtn').textContent = `Daha fazla göster (${Math.min(BATCH, remaining)} / ${remaining} kalan)`;
+            } else {
+                wrap.style.display = 'none';
             }
         }
 
-        // Filter butonları
+        function toggleExpand(btn) {
+            const card = btn.closest('.recipe-card');
+            card.classList.toggle('expanded');
+            btn.textContent = card.classList.contains('expanded') ? 'Daralt' : 'Devamını oku';
+        }
+
+        // Event listeners
         function setupFilters() {
             const filterBtns = document.querySelectorAll('.filter-btn');
             const searchInput = document.getElementById('recipeSearch');
-            let currentFilter = 'all';
+            const clearBtn = document.getElementById('searchClear');
+            let searchTimeout;
 
+            // Filter buttons
             filterBtns.forEach(btn => {
                 btn.addEventListener('click', () => {
-                    // Active class değiştir
                     filterBtns.forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
-
-                    // Tarifleri filtrele
                     currentFilter = btn.dataset.filter;
-                    displayRecipes(currentFilter, searchInput.value);
-
-                    // Google Analytics: Filtre kullanımı event
-                    gtag('event', 'filter_recipes', {
-                        filter_type: currentFilter,
-                        search_term: searchInput.value || 'none'
-                    });
+                    applyFilters();
+                    gtag('event', 'filter_recipes', { filter_type: currentFilter });
                 });
             });
 
-            // Arama input event
+            // Search input
             searchInput.addEventListener('input', (e) => {
-                const searchTerm = e.target.value;
-                displayRecipes(currentFilter, searchTerm);
+                currentQuery = e.target.value;
+                clearBtn.classList.toggle('visible', currentQuery.length > 0);
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    applyFilters();
+                    if (currentQuery.length >= 2) {
+                        gtag('event', 'search', { search_term: currentQuery, filter_used: currentFilter });
+                    }
+                }, 200);
+            });
 
-                // Google Analytics: Tarif arama event
-                if (searchTerm.length >= 2) {
-                    gtag('event', 'search', {
-                        search_term: searchTerm,
-                        filter_used: currentFilter
-                    });
+            // Clear button
+            clearBtn.addEventListener('click', () => {
+                searchInput.value = '';
+                currentQuery = '';
+                clearBtn.classList.remove('visible');
+                applyFilters();
+                searchInput.focus();
+            });
+
+            // Quick search chips
+            document.querySelectorAll('.search-chip').forEach(chip => {
+                chip.addEventListener('click', () => {
+                    const q = chip.dataset.q;
+                    searchInput.value = q;
+                    currentQuery = q;
+                    clearBtn.classList.add('visible');
+                    applyFilters();
+                    // Scroll to results
+                    document.getElementById('recipesGrid').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                });
+            });
+
+            // Load more
+            document.getElementById('loadMoreBtn').addEventListener('click', () => {
+                displayCount += BATCH;
+                render();
+            });
+
+            // Keyboard shortcut
+            document.addEventListener('keydown', (e) => {
+                if ((e.ctrlKey && e.key === 'k') || (e.key === '/' && document.activeElement.tagName !== 'INPUT')) {
+                    e.preventDefault();
+                    searchInput.focus();
+                    searchInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }
             });
         }
 
-        // Sayfa yüklendiğinde
-        document.addEventListener('DOMContentLoaded', () => {
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
             loadRecipesFromCSV();
             setupFilters();
         });
     </script>
-</body>
-</html>
