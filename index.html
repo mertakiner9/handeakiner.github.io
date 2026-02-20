@@ -948,6 +948,25 @@
                 margin: 0 auto 2rem;
             }
         }
+
+        /* Toast notification */
+        .toast-notification {
+            position: fixed;
+            bottom: -80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--deep-brown);
+            color: var(--cream);
+            padding: 0.9rem 2rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            transition: bottom 0.35s ease;
+            z-index: 999;
+            white-space: nowrap;
+        }
+        .toast-notification.show { bottom: 2rem; }
     </style>
 </head>
 <body>
@@ -1162,8 +1181,11 @@
         <p class="footer-text">© 2025 Tüm Hakları Saklıdır</p>
     </footer>
 
-    <!-- Papa Parse CSV Library -->
-    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <!-- Supabase JS (Realtime için) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+
+    <!-- Recipe Service -->
+    <script src="recipeService.js"></script>
 
     <script>
         // SVG ikonları
@@ -1227,62 +1249,61 @@
             return result;
         }
 
-        // CSV'den tarifleri yükle
-        async function loadRecipesFromCSV() {
+        // Platform string → source key
+        function mapPlatformToSource(platform) {
+            const p = (platform || '').toLowerCase();
+            if (p.includes('youtube')) return 'youtube';
+            if (p.includes('reel')) return 'instagram reel';
+            return 'instagram post';
+        }
+
+        // ISO date (YYYY-MM-DD) → DD.MM.YYYY
+        function formatDateFromISO(isoDate) {
+            if (!isoDate) return '';
+            const date = new Date(isoDate);
+            if (isNaN(date)) return '';
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            return `${day}.${month}.${date.getFullYear()}`;
+        }
+
+        // Tarifleri servisten yükle (mock veya Supabase)
+        async function loadRecipesFromService() {
             const loading = document.getElementById('loading');
             loading.classList.add('active');
 
             try {
-                const response = await fetch('recipes.csv?' + new Date().getTime());
-                if (!response.ok) throw new Error('CSV bulunamadı');
-                const csvText = await response.text();
+                const { data, error } = await window.recipeService.getAllRecipes();
+                if (error) throw error;
 
-                Papa.parse(csvText, {
-                    header: true,
-                    delimiter: ';',
-                    skipEmptyLines: true,
-                    complete: function(results) {
-                        allRecipes = results.data.map((row, index) => {
-                            const platform = (row.Platform || 'instagram').trim();
-                            const platformLower = platform.toLowerCase();
-                            let source = 'instagram';
-                            if (platformLower.includes('youtube')) source = 'youtube';
-                            else if (platformLower.includes('reel')) source = 'instagram reel';
-                            else source = 'instagram post';
-
-                            const desc = row['Açıklama'] || row.Aciklama || '';
-                            const hashtags = row.Hashtag || '';
-
-                            return {
-                                id: index + 1,
-                                source: source,
-                                title: row['Başlık'] || row.Baslik || 'İsimsiz İçerik',
-                                image: row['Görsel URL'] || row['Gorsel URL'] || '',
-                                link: row.Link || '',
-                                caption: desc,
-                                hashtags: hashtags,
-                                date: row.Tarih || '',
-                                _date: parseDate(row.Tarih || ''),
-                                _searchText: trLower([row['Başlık'] || '', desc, hashtags].join(' '))
-                            };
-                        });
-
-                        // Sort newest first
-                        allRecipes.sort((a, b) => b._date - a._date);
-
-                        // Update subtitle count
-                        const subtitle = document.querySelector('.recipes-subtitle');
-                        if (subtitle) subtitle.textContent = allRecipes.length + ' tarif ve içerik arasında arayın';
-
-                        loading.classList.remove('active');
-                        applyFilters();
-                    },
-                    error: function() {
-                        loading.classList.remove('active');
-                    }
+                allRecipes = data.map((row, index) => {
+                    const desc = row.description || '';
+                    const hashtags = row.hashtags || '';
+                    return {
+                        id: row.id || index + 1,
+                        source: mapPlatformToSource(row.platform),
+                        title: row.title || 'İsimsiz İçerik',
+                        image: row.image_url || '',
+                        link: row.link_url || '',
+                        caption: desc,
+                        hashtags: hashtags,
+                        date: formatDateFromISO(row.published_date),
+                        _date: new Date(row.published_date || 0),
+                        _searchText: trLower([row.title || '', desc, hashtags].join(' '))
+                    };
                 });
+
+                // Sort newest first
+                allRecipes.sort((a, b) => b._date - a._date);
+
+                // Update subtitle count
+                const subtitle = document.querySelector('.recipes-subtitle');
+                if (subtitle) subtitle.textContent = allRecipes.length + ' tarif ve içerik arasında arayın';
+
+                loading.classList.remove('active');
+                applyFilters();
             } catch (error) {
-                console.error('CSV yükleme hatası:', error);
+                console.error('Tarif yükleme hatası:', error);
                 loading.classList.remove('active');
             }
         }
@@ -1475,9 +1496,81 @@
             });
         }
 
+        // Toast notification
+        function showToast(message) {
+            const existing = document.querySelector('.toast-notification');
+            if (existing) existing.remove();
+            const toast = document.createElement('div');
+            toast.className = 'toast-notification';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            requestAnimationFrame(() => toast.classList.add('show'));
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 400);
+            }, 3500);
+        }
+
+        // Supabase Realtime subscription
+        function setupRealtime() {
+            const SUPABASE_URL = "https://dobykurhhrfcflselhwe.supabase.co";
+            const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRvYnlrdXJoaHJmY2Zsc2VsaHdlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE1NzcxMTIsImV4cCI6MjA4NzE1MzExMn0.LkQDF9O_WzRzcNSpS2NO0YSjTeen_DIuc5WsSyPP3CQ";
+
+            if (!window.supabase) return;
+            const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+            client.channel('recipes-changes')
+                .on('postgres_changes', { event: '*', schema: 'public', table: 'recipes' }, (payload) => {
+                    if (payload.eventType === 'INSERT') {
+                        const row = payload.new;
+                        const desc = row.description || '';
+                        const hashtags = row.hashtags || '';
+                        const newRecipe = {
+                            id: row.id,
+                            source: mapPlatformToSource(row.platform),
+                            title: row.title || 'İsimsiz İçerik',
+                            image: row.image_url || '',
+                            link: row.link_url || '',
+                            caption: desc,
+                            hashtags: hashtags,
+                            date: formatDateFromISO(row.published_date),
+                            _date: new Date(row.published_date || 0),
+                            _searchText: trLower([row.title || '', desc, hashtags].join(' '))
+                        };
+                        allRecipes.unshift(newRecipe);
+                        applyFilters();
+                        showToast('Yeni tarif eklendi!');
+                    } else if (payload.eventType === 'UPDATE') {
+                        const idx = allRecipes.findIndex(r => r.id === payload.new.id);
+                        if (idx !== -1) {
+                            const row = payload.new;
+                            const desc = row.description || '';
+                            const hashtags = row.hashtags || '';
+                            allRecipes[idx] = {
+                                ...allRecipes[idx],
+                                title: row.title || 'İsimsiz İçerik',
+                                image: row.image_url || '',
+                                link: row.link_url || '',
+                                caption: desc,
+                                hashtags: hashtags,
+                                date: formatDateFromISO(row.published_date),
+                                _date: new Date(row.published_date || 0),
+                                _searchText: trLower([row.title || '', desc, hashtags].join(' '))
+                            };
+                            applyFilters();
+                        }
+                    } else if (payload.eventType === 'DELETE') {
+                        allRecipes = allRecipes.filter(r => r.id !== payload.old.id);
+                        applyFilters();
+                    }
+                })
+                .subscribe();
+        }
+
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
-            loadRecipesFromCSV();
+            loadRecipesFromService();
             setupFilters();
+            setupRealtime();
         });
     </script>

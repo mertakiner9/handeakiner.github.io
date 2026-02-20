@@ -1,4 +1,5 @@
 # Backup files
+recipes.backup.csv
 recipes.csv.backup
 recipes.csv.backup2
 recipes.csv.backup3
@@ -11,6 +12,11 @@ download.log
 failed_urls.txt
 youtube_fetch.log
 failed_youtube_urls.txt
+
+# Development scripts (not needed in production)
+create_mock_data.py
+generate_instagram_links.py
+mockRecipes.js
 
 # Environment variables (API keys)
 .env
