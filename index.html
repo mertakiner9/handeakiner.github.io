@@ -1261,11 +1261,8 @@
         <p class="footer-text">© 2025 Tüm Hakları Saklıdır</p>
     </footer>
 
-    <!-- Supabase JS (Realtime için) -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-
-    <!-- Recipe Service -->
-    <script src="recipeService.js"></script>
+    <!-- Papa Parse CSV Library -->
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 
     <script>
         // SVG ikonları
@@ -1347,29 +1344,36 @@
             return `${day}.${month}.${date.getFullYear()}`;
         }
 
-        // Tarifleri servisten yükle (mock veya Supabase)
-        async function loadRecipesFromService() {
+        // Tarifleri recipes.csv dosyasından yükle
+        async function loadRecipesFromCSV() {
             const loading = document.getElementById('loading');
             loading.classList.add('active');
 
             try {
-                const { data, error } = await window.recipeService.getAllRecipes();
-                if (error) throw error;
+                const response = await fetch('recipes.csv?' + Date.now());
+                if (!response.ok) throw new Error('recipes.csv bulunamadı');
+                const csvText = await response.text();
 
-                allRecipes = data.map((row, index) => {
-                    const desc = row.description || '';
-                    const hashtags = row.hashtags || '';
+                const results = Papa.parse(csvText, {
+                    header: true,
+                    delimiter: ';',
+                    skipEmptyLines: true
+                });
+
+                allRecipes = results.data.map((row, index) => {
+                    const desc = row['Açıklama'] || '';
+                    const hashtags = row['Hashtag'] || '';
                     return {
-                        id: row.id || index + 1,
-                        source: mapPlatformToSource(row.platform),
-                        title: row.title || 'İsimsiz İçerik',
-                        image: row.image_url || '',
-                        link: row.link_url || '',
+                        id: index + 1,
+                        source: mapPlatformToSource(row['Platform']),
+                        title: row['Başlık'] || 'İsimsiz İçerik',
+                        image: row['Görsel URL'] || '',
+                        link: row['Link'] || '',
                         caption: desc,
                         hashtags: hashtags,
-                        date: formatDateFromISO(row.published_date),
-                        _date: new Date(row.published_date || 0),
-                        _searchText: trLower([row.title || '', desc, hashtags].join(' '))
+                        date: row['Tarih'] || '',
+                        _date: parseDate(row['Tarih']),
+                        _searchText: trLower([row['Başlık'] || '', desc, hashtags].join(' '))
                     };
                 });
 
@@ -1427,7 +1431,7 @@
             const needsExpand = desc.length > 150;
             const hasLink = recipe.link && recipe.link.startsWith('http');
             const isYoutube = recipe.source === 'youtube';
-            const hasImage = recipe.image && recipe.image.startsWith('http');
+            const hasImage = recipe.image && !/\.(mp4|mov|webm)$/i.test(recipe.image);
             const tags = (recipe.hashtags || '').split(/\s+/).filter(t => t.startsWith('#')).slice(0, 4);
             const sourceIcon = isYoutube ? icons.youtube : icons.instagram;
             const sourceLabel = isYoutube ? 'YouTube' : (recipe.source === 'instagram reel' ? 'Reel' : 'Post');
@@ -1591,62 +1595,6 @@
             }, 3500);
         }
 
-        // Supabase Realtime subscription
-        function setupRealtime() {
-            const SUPABASE_URL = "https://dobykurhhrfcflselhwe.supabase.co";
-            const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRvYnlrdXJoaHJmY2Zsc2VsaHdlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE1NzcxMTIsImV4cCI6MjA4NzE1MzExMn0.LkQDF9O_WzRzcNSpS2NO0YSjTeen_DIuc5WsSyPP3CQ";
-
-            if (!window.supabase) return;
-            const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-            client.channel('recipes-changes')
-                .on('postgres_changes', { event: '*', schema: 'public', table: 'recipes' }, (payload) => {
-                    if (payload.eventType === 'INSERT') {
-                        const row = payload.new;
-                        const desc = row.description || '';
-                        const hashtags = row.hashtags || '';
-                        const newRecipe = {
-                            id: row.id,
-                            source: mapPlatformToSource(row.platform),
-                            title: row.title || 'İsimsiz İçerik',
-                            image: row.image_url || '',
-                            link: row.link_url || '',
-                            caption: desc,
-                            hashtags: hashtags,
-                            date: formatDateFromISO(row.published_date),
-                            _date: new Date(row.published_date || 0),
-                            _searchText: trLower([row.title || '', desc, hashtags].join(' '))
-                        };
-                        allRecipes.unshift(newRecipe);
-                        applyFilters();
-                        showToast('Yeni tarif eklendi!');
-                    } else if (payload.eventType === 'UPDATE') {
-                        const idx = allRecipes.findIndex(r => r.id === payload.new.id);
-                        if (idx !== -1) {
-                            const row = payload.new;
-                            const desc = row.description || '';
-                            const hashtags = row.hashtags || '';
-                            allRecipes[idx] = {
-                                ...allRecipes[idx],
-                                title: row.title || 'İsimsiz İçerik',
-                                image: row.image_url || '',
-                                link: row.link_url || '',
-                                caption: desc,
-                                hashtags: hashtags,
-                                date: formatDateFromISO(row.published_date),
-                                _date: new Date(row.published_date || 0),
-                                _searchText: trLower([row.title || '', desc, hashtags].join(' '))
-                            };
-                            applyFilters();
-                        }
-                    } else if (payload.eventType === 'DELETE') {
-                        allRecipes = allRecipes.filter(r => r.id !== payload.old.id);
-                        applyFilters();
-                    }
-                })
-                .subscribe();
-        }
-
         // Mobile menu toggle
         function setupMobileMenu() {
             const btn = document.querySelector('.mobile-menu-btn');
@@ -1667,9 +1615,8 @@
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
-            loadRecipesFromService();
+            loadRecipesFromCSV();
             setupFilters();
-            setupRealtime();
             setupMobileMenu();
         });
     </script>
