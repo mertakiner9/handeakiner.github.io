@@ -554,6 +554,44 @@
             }
         }
 
+        /* Mevsim Sofrasi Teaser */
+        .mevsim-teaser {
+            padding: 6rem 0;
+            background: linear-gradient(180deg, var(--cream) 0%, var(--soft-peach) 100%);
+            text-align: center;
+        }
+
+        .mevsim-teaser-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .mevsim-teaser-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-top: 2rem;
+            padding: 1rem 2.5rem;
+            background: var(--deep-brown);
+            color: var(--cream);
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+
+        .mevsim-teaser-btn:hover {
+            background: var(--gold);
+            transform: translateY(-3px);
+        }
+
+        .mevsim-teaser-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
         /* Recipes Section */
         .recipes {
             padding: 8rem 0;
@@ -977,6 +1015,7 @@
             <li><a href="#about">Hakkımda</a></li>
             <li><a href="#expertise">Uzmanlık</a></li>
             <li><a href="#recipes">Tarifler</a></li>
+            <li><a href="mevsim-sofrasi/">Mevsim Sofrası</a></li>
             <li><a href="#social">Takip Et</a></li>
             <li><a href="#contact">İletişim</a></li>
         </ul>
@@ -1063,6 +1102,21 @@
                     <h3 class="expertise-title">İçerik Üretimi</h3>
                     <p class="expertise-desc">Sosyal medya için ilham veren, etkileşim yaratan içerikler üretiyorum.</p>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mevsim Sofrasi Teaser -->
+    <section class="mevsim-teaser" id="mevsim-sofrasi">
+        <div class="container">
+            <div class="mevsim-teaser-content">
+                <p class="section-label">Her Hafta Yeni</p>
+                <h2 class="section-title">Mevsim Sofrası</h2>
+                <p class="about-text">Haftalık paylaştığım beş tarif için ölçüleriyle eksiksiz pazar listeleri. Seçin, işaretleyin, yazdırın.</p>
+                <a href="mevsim-sofrasi/" class="mevsim-teaser-btn" onclick="gtag('event', 'mevsim_teaser_click', {location: 'homepage'});">
+                    Listeleri Gör
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
             </div>
         </div>
     </section>
