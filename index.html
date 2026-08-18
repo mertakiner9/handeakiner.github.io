@@ -1397,6 +1397,8 @@
             const query = trLower(currentQuery);
             const terms = query.split(/\s+/).filter(t => t.length > 0);
 
+            // allRecipes is already sorted newest-first; filter() preserves that order
+            // so results (with or without a search/type filter) stay newest-first.
             filtered = allRecipes.filter(r => {
                 // Type filter
                 if (currentFilter !== 'all' && r.source !== currentFilter) return false;
@@ -1404,21 +1406,6 @@
                 if (terms.length === 0) return true;
                 return terms.every(term => r._searchText.includes(term));
             });
-
-            // Relevance scoring
-            if (terms.length > 0) {
-                filtered.forEach(r => {
-                    let score = 0;
-                    const title = trLower(r.title || '');
-                    terms.forEach(t => {
-                        if (title.includes(t)) score += 10;
-                        let idx = 0;
-                        while ((idx = r._searchText.indexOf(t, idx)) !== -1) { score++; idx += t.length; }
-                    });
-                    r._score = score;
-                });
-                filtered.sort((a, b) => (b._score || 0) - (a._score || 0));
-            }
 
             displayCount = BATCH;
             render();
