@@ -95,9 +95,9 @@ class SkipChecker:
 
         image_url = image_url.strip()
 
-        # Already local
+        # Already local (and the file actually exists on disk)
         if image_url.startswith('images/'):
-            return True
+            return os.path.exists(image_url)
 
         # Unsplash placeholder - should download
         if 'unsplash.com' in image_url or 'placeholder' in image_url:
