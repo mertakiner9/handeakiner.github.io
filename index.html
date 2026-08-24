@@ -850,6 +850,7 @@
             width: 100%;
             height: 100vh;
             height: 100dvh;
+            height: calc(var(--pazar-vh, 1vh) * 100);
             background: rgba(61, 50, 41, 0.4);
             z-index: 300;
             opacity: 0;
@@ -869,6 +870,7 @@
             width: min(420px, 92vw);
             height: 100vh;
             height: 100dvh;
+            height: calc(var(--pazar-vh, 1vh) * 100);
             background: var(--cream);
             z-index: 301;
             box-shadow: -10px 0 40px rgba(0, 0, 0, 0.15);
@@ -2079,8 +2081,19 @@
             }).join('');
         }
 
+        // Panel açıkken arka sayfanın kaymasını engeller. Mobil Safari'de sayfa
+        // scroll edebildiği sürece adres çubuğu genişleyip daralıyor ve bu da
+        // panelin dvh/vh yüksekliğini panel açıkken bile kaydırabiliyordu.
+        let pazarScrollKonumu = 0;
+
         function pazarPaneliAc() {
             pazarPanelGuncelle();
+            pazarViewportYuksekligiGuncelle();
+            pazarScrollKonumu = window.scrollY;
+            document.body.style.position = 'fixed';
+            document.body.style.top = -pazarScrollKonumu + 'px';
+            document.body.style.left = '0';
+            document.body.style.right = '0';
             document.getElementById('pazarOverlay').classList.add('active');
             document.getElementById('pazarPanel').classList.add('active');
         }
@@ -2088,6 +2101,11 @@
         function pazarPaneliKapat() {
             document.getElementById('pazarOverlay').classList.remove('active');
             document.getElementById('pazarPanel').classList.remove('active');
+            document.body.style.position = '';
+            document.body.style.top = '';
+            document.body.style.left = '';
+            document.body.style.right = '';
+            window.scrollTo(0, pazarScrollKonumu);
         }
 
         function pazarListesiniTemizle() {
@@ -2100,6 +2118,14 @@
             pazarPanelGuncelle();
         }
 
+        // Mobil Safari'de adres çubuğu genişleyip daralırken CSS'in dvh/vh birimleri
+        // her zaman doğru takip etmiyor; gerçek görünür yüksekliği visualViewport'tan
+        // ölçüp bir CSS değişkenine yazıyoruz (klasik --vh tekniği).
+        function pazarViewportYuksekligiGuncelle() {
+            const h = (window.visualViewport ? window.visualViewport.height : window.innerHeight);
+            document.documentElement.style.setProperty('--pazar-vh', (h * 0.01) + 'px');
+        }
+
         function setupPazarListesi() {
             pazarButonlariGuncelle();
             pazarPanelGuncelle();
@@ -2108,6 +2134,14 @@
             document.getElementById('pazarOverlay').addEventListener('click', pazarPaneliKapat);
             document.getElementById('pazarPanelClear').addEventListener('click', pazarListesiniTemizle);
             document.getElementById('pazarPanelPrint').addEventListener('click', pazarListesiniYazdir);
+
+            pazarViewportYuksekligiGuncelle();
+            window.addEventListener('resize', pazarViewportYuksekligiGuncelle);
+            window.addEventListener('orientationchange', pazarViewportYuksekligiGuncelle);
+            if (window.visualViewport) {
+                window.visualViewport.addEventListener('resize', pazarViewportYuksekligiGuncelle);
+                window.visualViewport.addEventListener('scroll', pazarViewportYuksekligiGuncelle);
+            }
         }
 
         function createRecipeCard(recipe, index) {
