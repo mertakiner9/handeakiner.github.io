@@ -699,6 +699,10 @@
             background: var(--soft-peach);
         }
 
+        .recipe-image-link {
+            display: block;
+        }
+
         .recipe-content {
             padding: 1.5rem;
         }
@@ -750,6 +754,486 @@
 
         .recipe-link:hover {
             gap: 0.75rem;
+        }
+
+        /* Pazar Listesi — kart butonu */
+        .pazar-ekle-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            width: 100%;
+            margin-top: 1rem;
+            padding: 0.65rem 1rem;
+            font-family: 'Jost', sans-serif;
+            font-size: 0.78rem;
+            letter-spacing: 0.03em;
+            color: var(--deep-brown);
+            background: transparent;
+            border: 1px solid var(--warm-blush);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .pazar-ekle-btn:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        .pazar-ekle-btn.eklendi {
+            background: var(--deep-brown);
+            border-color: var(--deep-brown);
+            color: var(--cream);
+        }
+
+        .pazar-ekle-btn.eklendi:hover {
+            background: var(--gold);
+            border-color: var(--gold);
+        }
+
+        /* Pazar Listesi — yüzen buton */
+        .pazar-fab {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: none;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 1rem 1.5rem;
+            background: var(--deep-brown);
+            color: var(--cream);
+            border: none;
+            border-radius: 50px;
+            font-family: 'Jost', sans-serif;
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            box-shadow: 0 8px 30px rgba(92, 74, 61, 0.3);
+            z-index: 200;
+            transition: transform 0.25s ease, background 0.25s ease;
+        }
+
+        .pazar-fab.active {
+            display: flex;
+        }
+
+        .pazar-fab:hover {
+            transform: translateY(-3px);
+            background: var(--gold);
+        }
+
+        .pazar-fab-count {
+            background: var(--gold);
+            color: var(--deep-brown);
+            min-width: 22px;
+            height: 22px;
+            padding: 0 6px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 500;
+            transition: background 0.25s ease;
+        }
+
+        .pazar-fab:hover .pazar-fab-count {
+            background: var(--cream);
+        }
+
+        /* Pazar Listesi — panel */
+        .pazar-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(61, 50, 41, 0.4);
+            z-index: 300;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .pazar-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .pazar-panel {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: min(420px, 92vw);
+            background: var(--cream);
+            z-index: 301;
+            box-shadow: -10px 0 40px rgba(0, 0, 0, 0.15);
+            transform: translateX(100%);
+            transition: transform 0.35s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pazar-panel.active {
+            transform: translateX(0);
+        }
+
+        .pazar-panel-header {
+            padding: 2rem 1.75rem 1.25rem;
+            border-bottom: 1px solid var(--warm-blush);
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .pazar-panel-header h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.6rem;
+            color: var(--deep-brown);
+        }
+
+        .pazar-panel-close {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-light);
+            padding: 0.25rem;
+            transition: color 0.25s ease;
+        }
+
+        .pazar-panel-close:hover {
+            color: var(--deep-brown);
+        }
+
+        .pazar-panel-body {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .pazar-panel-list {
+            padding: 0.5rem 1.75rem;
+        }
+
+        .pazar-panel-empty {
+            text-align: center;
+            color: var(--text-light);
+            padding: 3rem 1rem;
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+
+        .pazar-panel-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1.1rem 0;
+            border-bottom: 1px solid var(--warm-blush);
+        }
+
+        .pazar-panel-item:last-child {
+            border-bottom: none;
+        }
+
+        .pazar-panel-item img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 10px;
+            background: var(--soft-peach);
+            flex: none;
+        }
+
+        .pazar-panel-item-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .pazar-panel-item-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.05rem;
+            color: var(--deep-brown);
+            line-height: 1.3;
+            margin-bottom: 0.35rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .pazar-panel-item-link {
+            font-size: 0.75rem;
+            color: var(--gold);
+            text-decoration: none;
+        }
+
+        .pazar-panel-item-remove {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-light);
+            flex: none;
+            padding: 0.25rem;
+            transition: color 0.25s ease;
+        }
+
+        .pazar-panel-item-remove:hover {
+            color: var(--terracotta);
+        }
+
+        /* Malzeme Listesi */
+        .pazar-malzeme-wrap {
+            margin-top: 0.5rem;
+            padding: 1.5rem 1.75rem 1rem;
+            border-top: 1px solid var(--warm-blush);
+        }
+
+        .pazar-malzeme-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 0.75rem;
+        }
+
+        .pazar-malzeme-header h4 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            color: var(--deep-brown);
+        }
+
+        .pazar-malzeme-sayac {
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--text-light);
+            white-space: nowrap;
+        }
+
+        .pazar-malzeme-bar {
+            height: 2px;
+            background: var(--warm-blush);
+            margin-bottom: 1.25rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pazar-malzeme-bar i {
+            position: absolute;
+            inset: 0 auto 0 0;
+            width: 0;
+            background: var(--gold);
+            transition: width 0.3s ease;
+        }
+
+        .pazar-malzeme-grup {
+            margin-bottom: 1.5rem;
+        }
+
+        .pazar-malzeme-grup h4 {
+            font-family: 'Jost', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+        }
+
+        .pazar-malzeme-yok {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            font-style: italic;
+        }
+
+        .pazar-malzeme-yok a {
+            color: var(--gold);
+        }
+
+        .pazar-malzeme-ul {
+            list-style: none;
+        }
+
+        .pazar-malzeme-ul li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 0.55rem 0;
+            cursor: pointer;
+            border-bottom: 1px solid rgba(232, 212, 196, 0.5);
+        }
+
+        .pazar-malzeme-ul li:last-child {
+            border-bottom: none;
+        }
+
+        .pazar-malzeme-kutu {
+            flex: none;
+            width: 15px;
+            height: 15px;
+            margin-top: 2px;
+            border: 1.5px solid var(--terracotta);
+            border-radius: 3px;
+            position: relative;
+            transition: all 0.18s ease;
+        }
+
+        .pazar-malzeme-kutu::after {
+            content: '';
+            position: absolute;
+            left: 4px;
+            top: 0;
+            width: 4px;
+            height: 8px;
+            border: solid var(--cream);
+            border-width: 0 1.5px 1.5px 0;
+            transform: rotate(45deg) scale(0);
+            transition: transform 0.18s ease;
+        }
+
+        .pazar-malzeme-ul li.isaretli .pazar-malzeme-kutu {
+            background: var(--gold);
+            border-color: var(--gold);
+        }
+
+        .pazar-malzeme-ul li.isaretli .pazar-malzeme-kutu::after {
+            transform: rotate(45deg) scale(1);
+        }
+
+        .pazar-malzeme-metin {
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            line-height: 1.4;
+        }
+
+        .pazar-malzeme-ul li.isaretli .pazar-malzeme-metin {
+            color: var(--text-light);
+            text-decoration: line-through;
+            text-decoration-thickness: 1px;
+        }
+
+        .pazar-panel-footer {
+            padding: 1.25rem 1.75rem 1.75rem;
+            border-top: 1px solid var(--warm-blush);
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .pazar-panel-print,
+        .pazar-panel-clear {
+            flex: 1;
+            font-family: 'Jost', sans-serif;
+            font-size: 0.85rem;
+            padding: 0.85rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .pazar-panel-print {
+            background: var(--deep-brown);
+            border: 1px solid var(--deep-brown);
+            color: var(--cream);
+        }
+
+        .pazar-panel-print:hover {
+            background: var(--gold);
+            border-color: var(--gold);
+        }
+
+        .pazar-panel-clear {
+            background: transparent;
+            border: 1px solid var(--warm-blush);
+            color: var(--text-light);
+        }
+
+        .pazar-panel-clear:hover {
+            border-color: var(--terracotta);
+            color: var(--deep-brown);
+        }
+
+        @media (max-width: 768px) {
+            .pazar-fab {
+                right: 1.25rem;
+                bottom: 1.25rem;
+                padding: 0.85rem 1.25rem;
+                font-size: 0.8rem;
+            }
+
+            /* Pazar Listesi — mobilde tam sayfa gibi açılsın */
+            .pazar-panel {
+                width: 100%;
+                box-shadow: none;
+            }
+
+            .pazar-panel-header {
+                position: sticky;
+                top: 0;
+                background: var(--cream);
+                z-index: 2;
+                padding: 1.25rem 1.25rem 1rem;
+            }
+
+            .pazar-panel-close {
+                padding: 0.5rem;
+            }
+
+            .pazar-panel-list,
+            .pazar-malzeme-wrap {
+                padding-left: 1.25rem;
+                padding-right: 1.25rem;
+            }
+
+            .pazar-malzeme-ul li {
+                padding: 0.8rem 0;
+            }
+
+            .pazar-malzeme-kutu {
+                width: 20px;
+                height: 20px;
+            }
+
+            .pazar-malzeme-kutu::after {
+                left: 6px;
+                width: 5px;
+                height: 11px;
+            }
+
+            .pazar-malzeme-metin {
+                font-size: 0.95rem;
+            }
+
+            .pazar-panel-footer {
+                padding: 1rem 1.25rem;
+                padding-bottom: max(1rem, env(safe-area-inset-bottom));
+            }
+
+            .pazar-panel-print,
+            .pazar-panel-clear {
+                padding: 1rem;
+            }
+        }
+
+        /* Pazar Listesi yazdırma — panel açıkken sadece malzeme listesi basılır */
+        @media print {
+            body > *:not(.pazar-panel) {
+                display: none !important;
+            }
+            .pazar-panel {
+                position: static;
+                transform: none;
+                width: 100%;
+                box-shadow: none;
+                display: block;
+            }
+            .pazar-panel-body {
+                overflow: visible;
+            }
+            .pazar-panel-close,
+            .pazar-panel-item-remove,
+            .pazar-panel-footer,
+            .pazar-panel-item-link {
+                display: none !important;
+            }
+            .pazar-malzeme-ul li {
+                cursor: default;
+            }
         }
 
         /* Loading State */
@@ -1231,6 +1715,38 @@
         <p class="footer-text">© 2025 Tüm Hakları Saklıdır</p>
     </footer>
 
+    <!-- Pazar Listesi (seçilen tarifler) -->
+    <div class="pazar-overlay" id="pazarOverlay"></div>
+    <aside class="pazar-panel" id="pazarPanel">
+        <div class="pazar-panel-header">
+            <h3>Pazar Listem</h3>
+            <button class="pazar-panel-close" id="pazarPanelClose" aria-label="Kapat">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+        </div>
+        <div class="pazar-panel-body">
+            <div class="pazar-panel-list" id="pazarPanelList"></div>
+
+            <div class="pazar-malzeme-wrap" id="pazarMalzemeWrap">
+                <div class="pazar-malzeme-header">
+                    <h4>Malzeme Listesi</h4>
+                    <span class="pazar-malzeme-sayac" id="pazarMalzemeSayac">0 / 0 alındı</span>
+                </div>
+                <div class="pazar-malzeme-bar"><i id="pazarMalzemeDolgu"></i></div>
+                <div id="pazarMalzemeListesi"></div>
+            </div>
+        </div>
+        <div class="pazar-panel-footer">
+            <button class="pazar-panel-print" id="pazarPanelPrint">Yazdır</button>
+            <button class="pazar-panel-clear" id="pazarPanelClear">Listeyi Temizle</button>
+        </div>
+    </aside>
+    <button class="pazar-fab" id="pazarFab">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18" height="18"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        Pazar Listem
+        <span class="pazar-fab-count" id="pazarFabCount">0</span>
+    </button>
+
     <!-- Papa Parse CSV Library -->
     <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 
@@ -1239,7 +1755,10 @@
         const icons = {
             instagram: '<svg viewBox="0 0 24 24" fill="#E4405F" width="16" height="16"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>',
             youtube: '<svg viewBox="0 0 24 24" fill="#FF0000" width="16" height="16"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>',
-            arrow: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg>'
+            arrow: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg>',
+            plus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M12 5v14M5 12h14"/></svg>',
+            check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M20 6L9 17l-5-5"/></svg>',
+            close: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M18 6L6 18M6 6l12 12"/></svg>'
         };
 
         // Turkish-aware lowercase
@@ -1263,6 +1782,15 @@
         const BATCH = 12;
         let currentFilter = 'all';
         let currentQuery = '';
+
+        // Pazar Listesi (seçilen tarifler) — sayfa yüklenir yüklenmez localStorage'dan okunur
+        // ki ilk render'da kartlar doğru "eklendi" durumuyla çizilsin.
+        let pazarListesi = [];
+        try { pazarListesi = JSON.parse(localStorage.getItem('mevsim-pazar-listesi') || '[]'); } catch (e) { pazarListesi = []; }
+
+        // Malzeme listesindeki işaretli (alınan) satırlar
+        let pazarMalzemeIsaretli = new Set();
+        try { pazarMalzemeIsaretli = new Set(JSON.parse(localStorage.getItem('mevsim-pazar-malzeme-isaretli') || '[]')); } catch (e) { pazarMalzemeIsaretli = new Set(); }
 
         // Tarihi formatla
         function formatDate(dateStr) {
@@ -1341,6 +1869,7 @@
                         link: row['Link'] || '',
                         caption: desc,
                         hashtags: hashtags,
+                        icerikTipi: row['İçerik Tipi'] || '',
                         date: row['Tarih'] || '',
                         _date: parseDate(row['Tarih']),
                         _searchText: trLower([row['Başlık'] || '', desc, hashtags].join(' '))
@@ -1356,6 +1885,7 @@
 
                 loading.classList.remove('active');
                 applyFilters();
+                if (pazarListesi.length > 0) pazarPanelGuncelle();
             } catch (error) {
                 console.error('Tarif yükleme hatası:', error);
                 loading.classList.remove('active');
@@ -1382,6 +1912,198 @@
         }
 
         // Create recipe card HTML
+        // ---------- Pazar Listesi (seçilen tarifler) ----------
+        function pazarKey(recipe) {
+            return (recipe.link && recipe.link.startsWith('http')) ? recipe.link : (recipe.title + '|' + recipe.date);
+        }
+
+        function pazarIcindeMi(key) {
+            return pazarListesi.some(r => r.key === key);
+        }
+
+        function pazarKaydet() {
+            try { localStorage.setItem('mevsim-pazar-listesi', JSON.stringify(pazarListesi)); } catch (e) {}
+        }
+
+        // ---------- Malzeme listesi (metinden en iyi çaba ile çıkarım) ----------
+        // Açıklamalarda "Malzeme  Miktar" satırları oldukça tutarlı bir kalıpla geliyor
+        // (örn. "Zeytinyağı 1 yemek kaşığı"). Miktar/birim içeren, cümle gibi durmayan
+        // kısa satırları malzeme olarak alıyoruz. %100 kusursuz değil ama okunabilir.
+        const PAZAR_MIKTAR_RE = /(\d+[\d.,/-]*\s*(adet|gr|gram|kg|ml|lt|litre|bardağ[ıi]|bardak|kaşığ[ıi]|kaşık|fincan[ıi]?|kase|şişe|diş|demet|bağ|paket|dilim|tutam|avuç|baş|dal|çimdik|dizi|salkım)|[½⅓⅔¼¾]\s*(adet|kaşığ[ıi]|bardağ[ıi]|şişe|kase)?)/i;
+
+        function malzemeleriCikar(caption) {
+            if (!caption) return [];
+            const satirlar = caption.split('\n').map(s => s.trim()).filter(Boolean);
+            const malzemeler = [];
+            for (const satir of satirlar) {
+                if (/^[*#\-•]/.test(satir)) continue;
+                if (satir.length > 70) continue;
+                if (/[.!?…]$/.test(satir)) continue;
+                if (PAZAR_MIKTAR_RE.test(satir)) malzemeler.push(satir);
+            }
+            return [...new Set(malzemeler)];
+        }
+
+        function pazarMalzemeKaydet() {
+            try { localStorage.setItem('mevsim-pazar-malzeme-isaretli', JSON.stringify([...pazarMalzemeIsaretli])); } catch (e) {}
+        }
+
+        function pazarMalzemeToggle(id) {
+            if (pazarMalzemeIsaretli.has(id)) pazarMalzemeIsaretli.delete(id);
+            else pazarMalzemeIsaretli.add(id);
+            pazarMalzemeKaydet();
+            pazarPanelGuncelle();
+        }
+
+        function pazarMalzemeListesiOlustur() {
+            const gruplar = [];
+            let toplam = 0, alinan = 0;
+
+            pazarListesi.forEach(item => {
+                const full = allRecipes.find(r => pazarKey(r) === item.key);
+                const baslik = (full && full.title) || item.title;
+                const link = (full && full.link) || item.link;
+                const malzemeler = (full && full.icerikTipi === 'Tarif') ? malzemeleriCikar(full.caption) : [];
+
+                if (malzemeler.length === 0) {
+                    gruplar.push({ baslik, link, bos: true });
+                    return;
+                }
+
+                const satirlar = malzemeler.map((metin, i) => {
+                    const id = encodeURIComponent(item.key) + '__' + i;
+                    const isaretli = pazarMalzemeIsaretli.has(id);
+                    toplam++;
+                    if (isaretli) alinan++;
+                    return { id, metin, isaretli };
+                });
+                gruplar.push({ baslik, satirlar });
+            });
+
+            return { gruplar, toplam, alinan };
+        }
+
+        function pazarListesiniYazdir() {
+            window.print();
+        }
+
+        function pazarEkleCikar(key) {
+            const idx = pazarListesi.findIndex(r => r.key === key);
+            if (idx !== -1) {
+                pazarListesi.splice(idx, 1);
+                // o tarife ait işaretli malzeme kayıtlarını da temizle
+                const onEk = encodeURIComponent(key) + '__';
+                [...pazarMalzemeIsaretli].forEach(id => { if (id.startsWith(onEk)) pazarMalzemeIsaretli.delete(id); });
+                pazarMalzemeKaydet();
+            } else {
+                const recipe = allRecipes.find(r => pazarKey(r) === key);
+                if (!recipe) return;
+                const hasImage = recipe.image && !/\.(mp4|mov|webm)$/i.test(recipe.image);
+                pazarListesi.push({
+                    key,
+                    title: recipe.title || 'İsimsiz İçerik',
+                    image: hasImage ? recipe.image : '',
+                    link: recipe.link || ''
+                });
+            }
+            pazarKaydet();
+            pazarButonlariGuncelle();
+            pazarPanelGuncelle();
+        }
+
+        function pazarButonlariGuncelle() {
+            document.querySelectorAll('.pazar-ekle-btn').forEach(btn => {
+                const eklendi = pazarIcindeMi(btn.dataset.key);
+                btn.classList.toggle('eklendi', eklendi);
+                btn.innerHTML = eklendi ? `${icons.check} Listede` : `${icons.plus} Pazar Listesine Ekle`;
+            });
+
+            const fab = document.getElementById('pazarFab');
+            const count = pazarListesi.length;
+            document.getElementById('pazarFabCount').textContent = count;
+            fab.classList.toggle('active', count > 0);
+        }
+
+        function pazarPanelGuncelle() {
+            const list = document.getElementById('pazarPanelList');
+            const malzemeWrap = document.getElementById('pazarMalzemeWrap');
+
+            if (pazarListesi.length === 0) {
+                list.innerHTML = '<p class="pazar-panel-empty">Henüz tarif eklemediniz.<br>Tariflerin altındaki "Pazar Listesine Ekle" butonuna tıklayın.</p>';
+                malzemeWrap.style.display = 'none';
+                return;
+            }
+
+            list.innerHTML = pazarListesi.map(r => `
+                <div class="pazar-panel-item">
+                    ${r.image ? `<img src="${escapeHtml(r.image)}" alt="${escapeHtml(r.title)}" onerror="this.style.display='none'">` : ''}
+                    <div class="pazar-panel-item-info">
+                        <div class="pazar-panel-item-title">${escapeHtml(r.title)}</div>
+                        ${r.link ? `<a href="${escapeHtml(r.link)}" target="_blank" class="pazar-panel-item-link">Tarife git</a>` : ''}
+                    </div>
+                    <button class="pazar-panel-item-remove" onclick="pazarEkleCikar('${r.key.replace(/'/g, "\\'")}')" aria-label="Kaldır">${icons.close}</button>
+                </div>
+            `).join('');
+
+            const { gruplar, toplam, alinan } = pazarMalzemeListesiOlustur();
+            malzemeWrap.style.display = 'block';
+            document.getElementById('pazarMalzemeSayac').textContent = `${alinan} / ${toplam} alındı`;
+            document.getElementById('pazarMalzemeDolgu').style.width = (toplam ? (alinan / toplam * 100) : 0) + '%';
+
+            document.getElementById('pazarMalzemeListesi').innerHTML = gruplar.map(g => {
+                if (g.bos) {
+                    return `
+                        <div class="pazar-malzeme-grup">
+                            <h4>${escapeHtml(g.baslik)}</h4>
+                            <p class="pazar-malzeme-yok">Malzeme bilgisi bulunamadı${g.link ? ` — <a href="${escapeHtml(g.link)}" target="_blank">gönderiye bakın</a>` : ''}.</p>
+                        </div>`;
+                }
+                return `
+                    <div class="pazar-malzeme-grup">
+                        <h4>${escapeHtml(g.baslik)}</h4>
+                        <ul class="pazar-malzeme-ul">
+                            ${g.satirlar.map(s => `
+                                <li class="${s.isaretli ? 'isaretli' : ''}" onclick="pazarMalzemeToggle('${s.id}')">
+                                    <span class="pazar-malzeme-kutu"></span>
+                                    <span class="pazar-malzeme-metin">${escapeHtml(s.metin)}</span>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>`;
+            }).join('');
+        }
+
+        function pazarPaneliAc() {
+            pazarPanelGuncelle();
+            document.getElementById('pazarOverlay').classList.add('active');
+            document.getElementById('pazarPanel').classList.add('active');
+        }
+
+        function pazarPaneliKapat() {
+            document.getElementById('pazarOverlay').classList.remove('active');
+            document.getElementById('pazarPanel').classList.remove('active');
+        }
+
+        function pazarListesiniTemizle() {
+            if (pazarListesi.length === 0) return;
+            pazarListesi = [];
+            pazarKaydet();
+            pazarMalzemeIsaretli.clear();
+            pazarMalzemeKaydet();
+            pazarButonlariGuncelle();
+            pazarPanelGuncelle();
+        }
+
+        function setupPazarListesi() {
+            pazarButonlariGuncelle();
+            pazarPanelGuncelle();
+            document.getElementById('pazarFab').addEventListener('click', pazarPaneliAc);
+            document.getElementById('pazarPanelClose').addEventListener('click', pazarPaneliKapat);
+            document.getElementById('pazarOverlay').addEventListener('click', pazarPaneliKapat);
+            document.getElementById('pazarPanelClear').addEventListener('click', pazarListesiniTemizle);
+            document.getElementById('pazarPanelPrint').addEventListener('click', pazarListesiniYazdir);
+        }
+
         function createRecipeCard(recipe, index) {
             const desc = recipe.caption || '';
             const shortDesc = desc.length > 150 ? desc.substring(0, 150) + '…' : desc;
@@ -1398,7 +2120,10 @@
 
             let imageHtml = '';
             if (hasImage) {
-                imageHtml = `<img src="${escapeHtml(recipe.image)}" alt="${safeTitle}" class="recipe-image" loading="lazy" onerror="this.style.display='none'">`;
+                const imgTag = `<img src="${escapeHtml(recipe.image)}" alt="${safeTitle}" class="recipe-image" loading="lazy" onerror="this.style.display='none'">`;
+                imageHtml = hasLink
+                    ? `<a href="${safeLink}" target="_blank" class="recipe-image-link" onclick="gtag('event', 'recipe_click', {recipe_title: '${safeTitle.replace(/'/g,"\\'")}', recipe_platform: '${recipe.source}'});">${imgTag}</a>`
+                    : imgTag;
             }
 
             let linkHtml = '';
@@ -1409,6 +2134,10 @@
             } else {
                 linkHtml = `<span class="no-link-notice">Arşiv içeriği</span>`;
             }
+
+            const pazarKeyVal = pazarKey(recipe);
+            const pazarEklendi = pazarIcindeMi(pazarKeyVal);
+            const pazarBtnHtml = `<button class="pazar-ekle-btn${pazarEklendi ? ' eklendi' : ''}" data-key="${escapeHtml(pazarKeyVal)}" onclick="pazarEkleCikar('${pazarKeyVal.replace(/'/g,"\\'")}')">${pazarEklendi ? icons.check + ' Listede' : icons.plus + ' Pazar Listesine Ekle'}</button>`;
 
             return `
                 <div class="recipe-card" data-source="${recipe.source}" style="animation-delay:${Math.min(index * 0.04, 0.3)}s">
@@ -1425,6 +2154,7 @@
                         <button class="expand-btn" onclick="toggleExpand(this)">Devamını oku</button>` : ''}
                         ${tags.length ? `<div class="recipe-tags">${tags.map(t => `<span class="recipe-tag">${escapeHtml(t)}</span>`).join('')}</div>` : ''}
                         ${linkHtml}
+                        ${pazarBtnHtml}
                     </div>
                 </div>
             `;
@@ -1575,5 +2305,6 @@
             loadRecipesFromCSV();
             setupFilters();
             setupMobileMenu();
+            setupPazarListesi();
         });
     </script>
