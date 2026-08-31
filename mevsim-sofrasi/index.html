@@ -134,13 +134,31 @@
             box-shadow: 0 12px 40px rgba(92, 74, 61, 0.15);
         }
 
+        .hafta-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
         .hafta-etiket {
             display: inline-block;
             font-size: 0.75rem;
             letter-spacing: 0.2em;
             text-transform: uppercase;
             color: var(--gold);
-            margin-bottom: 0.75rem;
+        }
+
+        .hafta-mevsim {
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-light);
+            background: var(--soft-peach);
+            padding: 0.25rem 0.7rem;
+            border-radius: 50px;
+            white-space: nowrap;
         }
 
         .hafta-baslik {
@@ -264,7 +282,10 @@
             const tarifler = (hafta.tarifler || []).map(t => `<li>${t}</li>`).join('');
             return `
                 <a class="hafta-card" href="${no}/" onclick="gtag('event', 'mevsim_hafta_click', {hafta_no: '${no}'});">
-                    <span class="hafta-etiket">Hafta ${no}</span>
+                    <div class="hafta-top">
+                        <span class="hafta-etiket">Hafta ${no}</span>
+                        ${hafta.mevsim ? `<span class="hafta-mevsim">${hafta.mevsim}</span>` : ''}
+                    </div>
                     <h3 class="hafta-baslik">${hafta.baslik || 'Pazar Listesi'}</h3>
                     <p class="hafta-alt">${hafta.altBaslik || ''}</p>
                     <ul class="hafta-tarifler">${tarifler}</ul>
