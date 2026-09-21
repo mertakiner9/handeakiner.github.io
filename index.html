@@ -421,6 +421,123 @@
             fill: var(--gold);
         }
 
+        /* Brands / İş Birlikleri Section */
+        .brands {
+            padding: 8rem 0;
+            background-color: var(--cream);
+        }
+
+        .brands-header {
+            max-width: 600px;
+            margin: 0 auto 4rem;
+            text-align: center;
+        }
+
+        .brands-columns {
+            display: grid;
+            grid-template-columns: 1.35fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .brands-course {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 1.35rem;
+            color: var(--gold);
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--warm-blush);
+        }
+
+        .brands-list {
+            list-style: none;
+        }
+
+        .brands-item {
+            display: block;
+        }
+
+        .brands-row {
+            display: flex;
+            align-items: baseline;
+            gap: 0.75rem;
+            padding: 0.7rem 0;
+        }
+
+        a.brands-row {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .brands-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600;
+            font-size: 1.3rem;
+            line-height: 1.2;
+            color: var(--deep-brown);
+            flex: 0 1 auto;
+            transition: color 0.25s ease;
+        }
+
+        .brands-name small {
+            display: block;
+            font-family: 'Jost', sans-serif;
+            font-weight: 300;
+            font-size: 0.75rem;
+            color: var(--text-light);
+            margin-top: 0.2rem;
+        }
+
+        .brands-leader {
+            flex: 1 1 2rem;
+            border-bottom: 1px dotted var(--terracotta);
+            opacity: 0.5;
+            transform: translateY(-0.3em);
+            min-width: 1.5rem;
+        }
+
+        .brands-meta {
+            flex: 0 0 auto;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            text-align: right;
+            max-width: 15rem;
+        }
+
+        a.brands-row:hover .brands-name,
+        a.brands-row:focus-visible .brands-name {
+            color: var(--gold);
+        }
+
+        a.brands-row:focus-visible {
+            outline: 2px solid var(--gold);
+            outline-offset: 4px;
+            border-radius: 2px;
+        }
+
+        @media (max-width: 760px) {
+            .brands-columns {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .brands-row {
+                flex-wrap: wrap;
+                gap: 0.15rem 0.75rem;
+            }
+
+            .brands-leader {
+                display: none;
+            }
+
+            .brands-meta {
+                flex-basis: 100%;
+                text-align: left;
+                max-width: none;
+            }
+        }
+
         /* Contact Section */
         .contact {
             padding: 8rem 0;
@@ -1516,6 +1633,7 @@
             <li><a href="#recipes">Tarifler</a></li>
             <li><a href="mevsim-sofrasi/">Mevsim Sofrası</a></li>
             <li><a href="#social">Takip Et</a></li>
+            <li><a href="#brands">Markalar</a></li>
             <li><a href="#contact">İletişim</a></li>
         </ul>
         <button class="mobile-menu-btn" aria-label="Menu">
@@ -1700,6 +1818,49 @@
                         </svg>
                         YouTube
                     </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Brands / İş Birlikleri Section -->
+    <section class="brands" id="brands">
+        <div class="container">
+            <div class="brands-header">
+                <p class="section-label">İş Birlikleri</p>
+                <h2 class="section-title">Birlikte Çalıştığım Markalar</h2>
+                <p class="about-text">Tarif geliştirdiğim, sofrasını kurduğum ve davetlerinde bulunduğum markalar. Bir markaya dokunarak birlikte hazırladığımız içeriği izleyebilirsiniz.</p>
+            </div>
+
+            <div class="brands-columns">
+                <div>
+                    <h3 class="brands-course">İş Birlikleri</h3>
+                    <ul class="brands-list">
+                        <li class="brands-item"><a class="brands-row" href="https://www.instagram.com/reel/DWn_FXnDC-9/" target="_blank" rel="noopener" onclick="gtag('event', 'brand_click', {brand_name: 'GoTürkiye'});"><span class="brands-name">GoTürkiye</span><span class="brands-leader"></span><span class="brands-meta">Paçanga Böreği, 2026</span></a></li>
+                        <li class="brands-item"><a class="brands-row" href="https://www.instagram.com/p/CqK-qLHAf_H/" target="_blank" rel="noopener" onclick="gtag('event', 'brand_click', {brand_name: 'Hepsiburada'});"><span class="brands-name">Hepsiburada</span><span class="brands-leader"></span><span class="brands-meta">Tarif içerikleri, 2022–2023</span></a></li>
+                        <li class="brands-item"><a class="brands-row" href="https://www.instagram.com/reels/DcBjNAVM1Rb/" target="_blank" rel="noopener" onclick="gtag('event', 'brand_click', {brand_name: 'WMF'});"><span class="brands-name">WMF</span><span class="brands-leader"></span><span class="brands-meta">Domatesli pilav, 2026</span></a></li>
+                        <li class="brands-item"><a class="brands-row" href="https://www.instagram.com/p/DGvaZhJovy3/" target="_blank" rel="noopener" onclick="gtag('event', 'brand_click', {brand_name: 'GetirBüyük'});"><span class="brands-name">GetirBüyük</span><span class="brands-leader"></span><span class="brands-meta">İftar sofrası, 2025</span></a></li>
+                        <li class="brands-item"><a class="brands-row" href="https://www.instagram.com/p/CrdKgVqRNvH/" target="_blank" rel="noopener" onclick="gtag('event', 'brand_click', {brand_name: 'Probably'});"><span class="brands-name">Probably</span><span class="brands-leader"></span><span class="brands-meta">Füme etli tost, 2023</span></a></li>
+                        <li class="brands-item"><a class="brands-row" href="https://www.instagram.com/p/DRKXJuxDHGA/" target="_blank" rel="noopener" onclick="gtag('event', 'brand_click', {brand_name: 'SharkNinja'});"><span class="brands-name">SharkNinja</span><span class="brands-leader"></span><span class="brands-meta">Ninja Crispi ile Meksika sofrası, 2025</span></a></li>
+                        <li class="brands-item"><a class="brands-row" href="https://www.instagram.com/p/DbGVOTHMylE/" target="_blank" rel="noopener" onclick="gtag('event', 'brand_click', {brand_name: 'Defya'});"><span class="brands-name">Defya</span><span class="brands-leader"></span><span class="brands-meta">Sağlıklı tarifler serisi, 8 tarif, 2025–2026</span></a></li>
+                        <li class="brands-item"><a class="brands-row" href="https://www.instagram.com/p/Cr-yJuqPw8Y/" target="_blank" rel="noopener" onclick="gtag('event', 'brand_click', {brand_name: 'Karaca'});"><span class="brands-name">Karaca</span><span class="brands-leader"></span><span class="brands-meta">Enginarlı pilav, 2023</span></a></li>
+                        <li class="brands-item"><a class="brands-row" href="https://www.instagram.com/p/DKzjB8UoHty/" target="_blank" rel="noopener" onclick="gtag('event', 'brand_click', {brand_name: 'Raaz Natural'});"><span class="brands-name">Raaz Natural</span><span class="brands-leader"></span><span class="brands-meta">Bitkisel yağlarla tarifler, 2024–2025</span></a></li>
+                        <li class="brands-item"><a class="brands-row" href="https://www.instagram.com/p/DKUIin5IhtT/" target="_blank" rel="noopener" onclick="gtag('event', 'brand_click', {brand_name: 'Kiralarsın'});"><span class="brands-name">Kiralarsın</span><span class="brands-leader"></span><span class="brands-meta">Evde yaz temizliği, 2025</span></a></li>
+                        <li class="brands-item"><a class="brands-row" href="https://www.instagram.com/p/DGA-svuornt/" target="_blank" rel="noopener" onclick="gtag('event', 'brand_click', {brand_name: 'Mayi Tuz'});"><span class="brands-name">Mayi Tuz</span><span class="brands-leader"></span><span class="brands-meta">Perşembe tarifleri, 2019–2025</span></a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="brands-course">Davetler ve Etkinlikler</h3>
+                    <ul class="brands-list">
+                        <li class="brands-item"><a class="brands-row" href="https://www.instagram.com/p/DXjYHKcjOac/" target="_blank" rel="noopener" onclick="gtag('event', 'brand_click', {brand_name: 'Pernod Ricard Türkiye'});"><span class="brands-name">Pernod Ricard Türkiye</span><span class="brands-leader"></span><span class="brands-meta">Bodrum Yeşili, 2024–2026</span></a></li>
+                        <li class="brands-item"><a class="brands-row" href="https://www.instagram.com/reels/DaSUIuzsKLc/" target="_blank" rel="noopener" onclick="gtag('event', 'brand_click', {brand_name: 'Mushmantar'});"><span class="brands-name">Mushmantar</span><span class="brands-leader"></span><span class="brands-meta">Denizli trüf rotası, 2026</span></a></li>
+                        <li class="brands-item"><a class="brands-row" href="https://www.instagram.com/reels/DaVxmKjMlp3/" target="_blank" rel="noopener" onclick="gtag('event', 'brand_click', {brand_name: 'Calling Mag'});"><span class="brands-name">Calling Mag</span><span class="brands-leader"></span><span class="brands-meta">Denizli trüf rotası, 2026</span></a></li>
+                        <li class="brands-item"><a class="brands-row" href="https://www.instagram.com/p/DanPnF5DN00" target="_blank" rel="noopener" onclick="gtag('event', 'brand_click', {brand_name: 'Macrocenter'});"><span class="brands-name">Macrocenter</span><span class="brands-leader"></span><span class="brands-meta">Denizli trüf rotası, 2026</span></a></li>
+                        <li class="brands-item"><a class="brands-row" href="https://www.instagram.com/p/DYrMkpjjNHq/" target="_blank" rel="noopener" onclick="gtag('event', 'brand_click', {brand_name: 'Bench Bodrum'});"><span class="brands-name">Bench Bodrum</span><span class="brands-leader"></span><span class="brands-meta">Bitez, 2026</span></a></li>
+                        <li class="brands-item"><a class="brands-row" href="https://www.instagram.com/p/Da-zgn2DDtg/" target="_blank" rel="noopener" onclick="gtag('event', 'brand_click', {brand_name: 'To be house | kitchen'});"><span class="brands-name">To be house | kitchen</span><span class="brands-leader"></span><span class="brands-meta">İstanbul, 2026</span></a></li>
+                        <li class="brands-item"><a class="brands-row" href="https://www.instagram.com/reels/DYg2x_bMH4e/" target="_blank" rel="noopener" onclick="gtag('event', 'brand_click', {brand_name: 'The Marmara Bodrum - Tuti Restaurant'});"><span class="brands-name">The Marmara Bodrum - Tuti Restaurant</span><span class="brands-leader"></span><span class="brands-meta">Bodrum, 2026</span></a></li>
+                    </ul>
                 </div>
             </div>
         </div>
