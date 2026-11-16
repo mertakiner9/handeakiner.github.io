@@ -125,6 +125,31 @@ footer{margin-top:50px;padding-top:26px;border-top:1px solid var(--cizgi);text-a
   footer{margin-top:14px;padding-top:9px}
   .dipnot{font-size:11px}.adres{font-size:8px;margin-top:7px}
 }
+
+/* ---------- yazdırma seçimi + baskı iyileştirmeleri ---------- */
+.secim{display:none;align-items:center;gap:8px;flex-wrap:wrap;margin:14px 0 0;padding:14px 16px;
+  border:1px solid var(--cizgi);border-radius:2px}
+.secim.acik{display:flex}
+.secim-soru{flex:1 1 220px;font-size:14px;line-height:1.4;color:var(--soluk)}
+.secim button b{font-weight:500}
+.baski-not,.ekstra-bolum{display:none}
+@media print{
+  .secim{display:none!important}
+  .seri[data-no]:after{content:" · Hafta " attr(data-no)}
+  .seri,.bh h2,.alt,.dipnot,.adres,footer,.ad small,.ol,.olcu,.ops{color:#5A544B!important}
+  .kt,.kutu{border:1px solid #5A544B!important;background:none!important}
+  .kt:after,.kutu:after{display:none!important}
+  .no{opacity:1!important}
+  li{break-inside:avoid;padding-top:4px!important;padding-bottom:4px!important}
+  section{margin-bottom:12px!important}
+  footer{margin-top:10px!important}
+  .ekstra-bolum{display:block}
+  .ekstra-bolum li .ad{border-bottom:1px solid #C8C2B8;min-height:1.25em}
+  body.kalanlar li.ok{display:none!important}
+  body.kalanlar section.bos{display:none!important}
+  body.kalanlar .baski-not{display:block;margin:10px 0 0;font-size:9px;letter-spacing:.14em;
+    text-transform:uppercase;color:#5A544B}
+}
 </style>
 </head>
 <body>
@@ -145,9 +170,17 @@ footer{margin-top:50px;padding-top:26px;border-top:1px solid var(--cizgi);text-a
     <div class="hat"><i id="dolgu"></i></div>
     <div class="dugmeler">
       <button onclick="temizle()">Sıfırla</button>
-      <button onclick="window.print()">Yazdır</button>
+      <button onclick="yazdir()">Yazdır</button>
     </div>
   </div>
+
+  <div class="secim" id="secim">
+    <span class="secim-soru">İşaretlediğin malzemeler kâğıttan çıksın mı?</span>
+    <button onclick="yazdirBas('kalan')">Kalanlar (<b id="kalanSay">0</b>)</button>
+    <button onclick="yazdirBas('tum')">Tüm liste</button>
+    <button onclick="document.getElementById('secim').classList.remove('acik')">Vazgeç</button>
+  </div>
+  <div class="baski-not" id="baskiNot"></div>
 
   <div class="bolumler" id="bolumler"></div>
 
@@ -483,6 +516,52 @@ function temizle(){
   say();
 }
 yukle(); say();
+
+/* ---------- yazdır: tüm liste ya da kalanlar ---------- */
+(function(){
+  const seri=document.querySelector('.seri');
+  if(seri && !document.getElementById('hafta')) seri.dataset.no=HAFTA.no;
+  // elle yazmak için 4 boş satırlık "Ekstra" bölümü (yalnız baskıda görünür)
+  const ornek=document.querySelector('#bolumler section');
+  if(ornek){
+    const s=ornek.cloneNode(true);
+    s.classList.add('ekstra-bolum');
+    s.querySelector('h2').textContent='Ekstra';
+    s.querySelectorAll('.bh em').forEach(e=>e.remove());
+    const ul=s.querySelector('ul'), li=ul.querySelector('li');
+    ul.innerHTML='';
+    for(let k=0;k<4;k++){
+      const c=li.cloneNode(true);
+      c.removeAttribute('onclick'); c.removeAttribute('data-k'); c.className='ekstra';
+      c.querySelectorAll('span').forEach(sp=>{ if(!/kt|kutu/.test(sp.className)) sp.innerHTML=''; });
+      ul.appendChild(c);
+    }
+    document.getElementById('bolumler').appendChild(s);
+  }
+})();
+function _isaretli(){ return [...document.querySelectorAll('#bolumler section:not(.ekstra-bolum) li')]; }
+function yazdir(){
+  const t=_isaretli(), ok=t.filter(l=>l.classList.contains('ok')).length;
+  if(!ok){ yazdirBas('tum'); return; }
+  document.getElementById('kalanSay').textContent=t.length-ok;
+  document.getElementById('secim').classList.add('acik');
+}
+function yazdirHazirla(mod){
+  const t=_isaretli(), ok=t.filter(l=>l.classList.contains('ok')).length;
+  document.body.classList.toggle('kalanlar',mod==='kalan');
+  document.querySelectorAll('#bolumler section').forEach(s=>{
+    const l=[...s.querySelectorAll('li')];
+    s.classList.toggle('bos',!s.classList.contains('ekstra-bolum') && l.every(x=>x.classList.contains('ok')));
+  });
+  document.getElementById('baskiNot').textContent=
+    `İşaretlenen ${ok} malzeme çıkarıldı · ${t.length-ok} kalem kaldı`;
+}
+function yazdirBas(mod){
+  document.getElementById('secim').classList.remove('acik');
+  yazdirHazirla(mod);
+  setTimeout(()=>window.print(),60);
+}
+window.addEventListener('afterprint',()=>document.body.classList.remove('kalanlar'));
 </script>
 </body>
 </html>
